@@ -54,7 +54,7 @@ For executing pxf2bff you will need:
 
     $ ./pxf2bff -i in/*json -o out
 
-    $ $path/pxf2bff -i file.json  ---out-dir my_bff_outdir
+    $ $path/pxf2bff -i file.json --out-dir my_bff_outdir
 
     $ $path/pxf2bff -i my_indir/*json -o my_bff_outdir 
 
