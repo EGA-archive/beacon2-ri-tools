@@ -1,0 +1,821 @@
+[
+   {
+      "diseases" : [],
+      "id" : "P0007499",
+      "info" : {
+         "dateOfBirth" : "unknown-01-01T00:00:00Z",
+         "interpretation" : {
+            "phenopacket" : {
+               "metadata" : {
+                  "created" : "2021-04-21T09:33:50.417Z",
+                  "resources" : [
+                     {
+                        "id" : "hp",
+                        "iriPrefix" : "http://purl.obolibrary.org/obo/HP_",
+                        "name" : "Human Phenotype Ontology",
+                        "namespacePrefix" : "HP",
+                        "url" : "http://purl.obolibrary.org/obo/hp.owl",
+                        "version" : "2020-12-07"
+                     },
+                     {
+                        "id" : "orphanet",
+                        "iriPrefix" : "http://www.orpha.net/ORDO/Orphanet_",
+                        "name" : "Orphanet Rare Disease Ontology",
+                        "namespacePrefix" : "Orphanet",
+                        "url" : "http://orpha.net/ontology/ORDO_en_3.1.owl",
+                        "version" : "3.1"
+                     },
+                     {
+                        "id" : "hgnc",
+                        "iriPrefix" : "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/",
+                        "name" : "HUGO Gene Nomenclature Committee",
+                        "namespacePrefix" : "HGNC",
+                        "url" : "https://www.genenames.org",
+                        "version" : "2021-01-13"
+                     },
+                     {
+                        "id" : "mim",
+                        "iriPrefix" : "https://omim.org/entry/",
+                        "name" : "Online Mendelian Inheritance in Man",
+                        "namespacePrefix" : "OMIM",
+                        "url" : "https://omim.org/",
+                        "version" : "2021-01-21"
+                     }
+                  ]
+               },
+               "resolutionStatus" : "UNSOLVED"
+            }
+         },
+         "phenopacket" : {
+            "metadata" : {
+               "created" : "2021-04-21T09:33:50.417Z",
+               "resources" : [
+                  {
+                     "id" : "hp",
+                     "iriPrefix" : "http://purl.obolibrary.org/obo/HP_",
+                     "name" : "Human Phenotype Ontology",
+                     "namespacePrefix" : "HP",
+                     "url" : "http://purl.obolibrary.org/obo/hp.owl",
+                     "version" : "2020-12-07"
+                  },
+                  {
+                     "id" : "orphanet",
+                     "iriPrefix" : "http://www.orpha.net/ORDO/Orphanet_",
+                     "name" : "Orphanet Rare Disease Ontology",
+                     "namespacePrefix" : "Orphanet",
+                     "url" : "http://orpha.net/ontology/ORDO_en_3.1.owl",
+                     "version" : "3.1"
+                  },
+                  {
+                     "id" : "hgnc",
+                     "iriPrefix" : "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/",
+                     "name" : "HUGO Gene Nomenclature Committee",
+                     "namespacePrefix" : "HGNC",
+                     "url" : "https://www.genenames.org",
+                     "version" : "2021-01-13"
+                  },
+                  {
+                     "id" : "mim",
+                     "iriPrefix" : "https://omim.org/entry/",
+                     "name" : "Online Mendelian Inheritance in Man",
+                     "namespacePrefix" : "OMIM",
+                     "url" : "https://omim.org/",
+                     "version" : "2021-01-21"
+                  }
+               ]
+            }
+         }
+      },
+      "phenotypicFeatures" : [],
+      "sex" : {
+         "id" : "NCIT:C20197",
+         "label" : "male"
+      }
+   },
+   {
+      "diseases" : [
+         {
+            "diseaseCode" : {
+               "id" : "Orphanet:97245",
+               "label" : "Congenital myopathy"
+            }
+         },
+         {
+            "diseaseCode" : {
+               "id" : "OMIM:117000",
+               "label" : "CENTRAL CORE DISEASE OF MUSCLE"
+            }
+         }
+      ],
+      "id" : "P0007498",
+      "info" : {
+         "dateOfBirth" : "2013-01-01T00:00:00Z",
+         "interpretation" : {
+            "phenopacket" : {
+               "metadata" : {
+                  "created" : "2021-04-21T09:32:38.488Z",
+                  "resources" : [
+                     {
+                        "id" : "hp",
+                        "iriPrefix" : "http://purl.obolibrary.org/obo/HP_",
+                        "name" : "Human Phenotype Ontology",
+                        "namespacePrefix" : "HP",
+                        "url" : "http://purl.obolibrary.org/obo/hp.owl",
+                        "version" : "2020-12-07"
+                     },
+                     {
+                        "id" : "orphanet",
+                        "iriPrefix" : "http://www.orpha.net/ORDO/Orphanet_",
+                        "name" : "Orphanet Rare Disease Ontology",
+                        "namespacePrefix" : "Orphanet",
+                        "url" : "http://orpha.net/ontology/ORDO_en_3.1.owl",
+                        "version" : "3.1"
+                     },
+                     {
+                        "id" : "hgnc",
+                        "iriPrefix" : "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/",
+                        "name" : "HUGO Gene Nomenclature Committee",
+                        "namespacePrefix" : "HGNC",
+                        "url" : "https://www.genenames.org",
+                        "version" : "2021-01-13"
+                     },
+                     {
+                        "id" : "mim",
+                        "iriPrefix" : "https://omim.org/entry/",
+                        "name" : "Online Mendelian Inheritance in Man",
+                        "namespacePrefix" : "OMIM",
+                        "url" : "https://omim.org/",
+                        "version" : "2021-01-21"
+                     }
+                  ]
+               },
+               "resolutionStatus" : "SOLVED"
+            }
+         },
+         "phenopacket" : {
+            "metadata" : {
+               "created" : "2021-04-21T09:32:38.488Z",
+               "resources" : [
+                  {
+                     "id" : "hp",
+                     "iriPrefix" : "http://purl.obolibrary.org/obo/HP_",
+                     "name" : "Human Phenotype Ontology",
+                     "namespacePrefix" : "HP",
+                     "url" : "http://purl.obolibrary.org/obo/hp.owl",
+                     "version" : "2020-12-07"
+                  },
+                  {
+                     "id" : "orphanet",
+                     "iriPrefix" : "http://www.orpha.net/ORDO/Orphanet_",
+                     "name" : "Orphanet Rare Disease Ontology",
+                     "namespacePrefix" : "Orphanet",
+                     "url" : "http://orpha.net/ontology/ORDO_en_3.1.owl",
+                     "version" : "3.1"
+                  },
+                  {
+                     "id" : "hgnc",
+                     "iriPrefix" : "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/",
+                     "name" : "HUGO Gene Nomenclature Committee",
+                     "namespacePrefix" : "HGNC",
+                     "url" : "https://www.genenames.org",
+                     "version" : "2021-01-13"
+                  },
+                  {
+                     "id" : "mim",
+                     "iriPrefix" : "https://omim.org/entry/",
+                     "name" : "Online Mendelian Inheritance in Man",
+                     "namespacePrefix" : "OMIM",
+                     "url" : "https://omim.org/",
+                     "version" : "2021-01-21"
+                  }
+               ]
+            }
+         }
+      },
+      "phenotypicFeatures" : [
+         {
+            "excluded" : true,
+            "featureType" : {
+               "id" : "HP:0001249",
+               "label" : "Intellectual disability"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0000467",
+               "label" : "Neck muscle weakness"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0001252",
+               "label" : "Muscular hypotonia"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0001319",
+               "label" : "Neonatal hypotonia"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0001374",
+               "label" : "Congenital hip dislocation"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0002540",
+               "label" : "Inability to walk"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0002783",
+               "label" : "Recurrent lower respiratory tract infections"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0002804",
+               "label" : "Arthrogryposis multiplex congenita"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0003202",
+               "label" : "Skeletal muscle atrophy"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0005684",
+               "label" : "Distal arthrogryposis"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0030319",
+               "label" : "Weakness of facial musculature"
+            }
+         }
+      ],
+      "sex" : {
+         "id" : "NCIT:C20197",
+         "label" : "male"
+      }
+   },
+   {
+      "diseases" : [],
+      "id" : "P0007500",
+      "info" : {
+         "dateOfBirth" : "unknown-01-01T00:00:00Z",
+         "interpretation" : {
+            "phenopacket" : {
+               "metadata" : {
+                  "created" : "2021-04-21T09:37:19.994Z",
+                  "resources" : [
+                     {
+                        "id" : "hp",
+                        "iriPrefix" : "http://purl.obolibrary.org/obo/HP_",
+                        "name" : "Human Phenotype Ontology",
+                        "namespacePrefix" : "HP",
+                        "url" : "http://purl.obolibrary.org/obo/hp.owl",
+                        "version" : "2020-12-07"
+                     },
+                     {
+                        "id" : "orphanet",
+                        "iriPrefix" : "http://www.orpha.net/ORDO/Orphanet_",
+                        "name" : "Orphanet Rare Disease Ontology",
+                        "namespacePrefix" : "Orphanet",
+                        "url" : "http://orpha.net/ontology/ORDO_en_3.1.owl",
+                        "version" : "3.1"
+                     },
+                     {
+                        "id" : "hgnc",
+                        "iriPrefix" : "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/",
+                        "name" : "HUGO Gene Nomenclature Committee",
+                        "namespacePrefix" : "HGNC",
+                        "url" : "https://www.genenames.org",
+                        "version" : "2021-01-13"
+                     },
+                     {
+                        "id" : "mim",
+                        "iriPrefix" : "https://omim.org/entry/",
+                        "name" : "Online Mendelian Inheritance in Man",
+                        "namespacePrefix" : "OMIM",
+                        "url" : "https://omim.org/",
+                        "version" : "2021-01-21"
+                     }
+                  ]
+               },
+               "resolutionStatus" : "UNSOLVED"
+            }
+         },
+         "phenopacket" : {
+            "metadata" : {
+               "created" : "2021-04-21T09:37:19.994Z",
+               "resources" : [
+                  {
+                     "id" : "hp",
+                     "iriPrefix" : "http://purl.obolibrary.org/obo/HP_",
+                     "name" : "Human Phenotype Ontology",
+                     "namespacePrefix" : "HP",
+                     "url" : "http://purl.obolibrary.org/obo/hp.owl",
+                     "version" : "2020-12-07"
+                  },
+                  {
+                     "id" : "orphanet",
+                     "iriPrefix" : "http://www.orpha.net/ORDO/Orphanet_",
+                     "name" : "Orphanet Rare Disease Ontology",
+                     "namespacePrefix" : "Orphanet",
+                     "url" : "http://orpha.net/ontology/ORDO_en_3.1.owl",
+                     "version" : "3.1"
+                  },
+                  {
+                     "id" : "hgnc",
+                     "iriPrefix" : "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/",
+                     "name" : "HUGO Gene Nomenclature Committee",
+                     "namespacePrefix" : "HGNC",
+                     "url" : "https://www.genenames.org",
+                     "version" : "2021-01-13"
+                  },
+                  {
+                     "id" : "mim",
+                     "iriPrefix" : "https://omim.org/entry/",
+                     "name" : "Online Mendelian Inheritance in Man",
+                     "namespacePrefix" : "OMIM",
+                     "url" : "https://omim.org/",
+                     "version" : "2021-01-21"
+                  }
+               ]
+            }
+         }
+      },
+      "phenotypicFeatures" : [],
+      "sex" : {
+         "id" : "NCIT:C16576",
+         "label" : "female"
+      }
+   },
+   {
+      "diseases" : [],
+      "id" : "P0007504",
+      "info" : {
+         "dateOfBirth" : "2002-01-01T00:00:00Z",
+         "interpretation" : {
+            "phenopacket" : {
+               "metadata" : {
+                  "created" : "2021-04-21T09:40:31.348Z",
+                  "resources" : [
+                     {
+                        "id" : "hp",
+                        "iriPrefix" : "http://purl.obolibrary.org/obo/HP_",
+                        "name" : "Human Phenotype Ontology",
+                        "namespacePrefix" : "HP",
+                        "url" : "http://purl.obolibrary.org/obo/hp.owl",
+                        "version" : "2020-12-07"
+                     },
+                     {
+                        "id" : "orphanet",
+                        "iriPrefix" : "http://www.orpha.net/ORDO/Orphanet_",
+                        "name" : "Orphanet Rare Disease Ontology",
+                        "namespacePrefix" : "Orphanet",
+                        "url" : "http://orpha.net/ontology/ORDO_en_3.1.owl",
+                        "version" : "3.1"
+                     },
+                     {
+                        "id" : "hgnc",
+                        "iriPrefix" : "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/",
+                        "name" : "HUGO Gene Nomenclature Committee",
+                        "namespacePrefix" : "HGNC",
+                        "url" : "https://www.genenames.org",
+                        "version" : "2021-01-13"
+                     },
+                     {
+                        "id" : "mim",
+                        "iriPrefix" : "https://omim.org/entry/",
+                        "name" : "Online Mendelian Inheritance in Man",
+                        "namespacePrefix" : "OMIM",
+                        "url" : "https://omim.org/",
+                        "version" : "2021-01-21"
+                     }
+                  ]
+               },
+               "resolutionStatus" : "UNSOLVED"
+            }
+         },
+         "phenopacket" : {
+            "metadata" : {
+               "created" : "2021-04-21T09:40:31.348Z",
+               "resources" : [
+                  {
+                     "id" : "hp",
+                     "iriPrefix" : "http://purl.obolibrary.org/obo/HP_",
+                     "name" : "Human Phenotype Ontology",
+                     "namespacePrefix" : "HP",
+                     "url" : "http://purl.obolibrary.org/obo/hp.owl",
+                     "version" : "2020-12-07"
+                  },
+                  {
+                     "id" : "orphanet",
+                     "iriPrefix" : "http://www.orpha.net/ORDO/Orphanet_",
+                     "name" : "Orphanet Rare Disease Ontology",
+                     "namespacePrefix" : "Orphanet",
+                     "url" : "http://orpha.net/ontology/ORDO_en_3.1.owl",
+                     "version" : "3.1"
+                  },
+                  {
+                     "id" : "hgnc",
+                     "iriPrefix" : "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/",
+                     "name" : "HUGO Gene Nomenclature Committee",
+                     "namespacePrefix" : "HGNC",
+                     "url" : "https://www.genenames.org",
+                     "version" : "2021-01-13"
+                  },
+                  {
+                     "id" : "mim",
+                     "iriPrefix" : "https://omim.org/entry/",
+                     "name" : "Online Mendelian Inheritance in Man",
+                     "namespacePrefix" : "OMIM",
+                     "url" : "https://omim.org/",
+                     "version" : "2021-01-21"
+                  }
+               ]
+            }
+         }
+      },
+      "phenotypicFeatures" : [
+         {
+            "excluded" : true,
+            "featureType" : {
+               "id" : "HP:0003236",
+               "label" : "Elevated serum creatine phosphokinase"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0001324",
+               "label" : "Muscle weakness"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0003326",
+               "label" : "Myalgia"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0003560",
+               "label" : "Muscular dystrophy"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0009050",
+               "label" : "Quadriceps muscle atrophy"
+            }
+         }
+      ],
+      "sex" : {
+         "id" : "NCIT:C20197",
+         "label" : "male"
+      }
+   },
+   {
+      "diseases" : [],
+      "id" : "P0007508",
+      "info" : {
+         "dateOfBirth" : "unknown-01-01T00:00:00Z",
+         "interpretation" : {
+            "phenopacket" : {
+               "metadata" : {
+                  "created" : "2021-04-21T09:42:56.635Z",
+                  "resources" : [
+                     {
+                        "id" : "hp",
+                        "iriPrefix" : "http://purl.obolibrary.org/obo/HP_",
+                        "name" : "Human Phenotype Ontology",
+                        "namespacePrefix" : "HP",
+                        "url" : "http://purl.obolibrary.org/obo/hp.owl",
+                        "version" : "2020-12-07"
+                     },
+                     {
+                        "id" : "orphanet",
+                        "iriPrefix" : "http://www.orpha.net/ORDO/Orphanet_",
+                        "name" : "Orphanet Rare Disease Ontology",
+                        "namespacePrefix" : "Orphanet",
+                        "url" : "http://orpha.net/ontology/ORDO_en_3.1.owl",
+                        "version" : "3.1"
+                     },
+                     {
+                        "id" : "hgnc",
+                        "iriPrefix" : "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/",
+                        "name" : "HUGO Gene Nomenclature Committee",
+                        "namespacePrefix" : "HGNC",
+                        "url" : "https://www.genenames.org",
+                        "version" : "2021-01-13"
+                     },
+                     {
+                        "id" : "mim",
+                        "iriPrefix" : "https://omim.org/entry/",
+                        "name" : "Online Mendelian Inheritance in Man",
+                        "namespacePrefix" : "OMIM",
+                        "url" : "https://omim.org/",
+                        "version" : "2021-01-21"
+                     }
+                  ]
+               },
+               "resolutionStatus" : "UNSOLVED"
+            }
+         },
+         "phenopacket" : {
+            "metadata" : {
+               "created" : "2021-04-21T09:42:56.635Z",
+               "resources" : [
+                  {
+                     "id" : "hp",
+                     "iriPrefix" : "http://purl.obolibrary.org/obo/HP_",
+                     "name" : "Human Phenotype Ontology",
+                     "namespacePrefix" : "HP",
+                     "url" : "http://purl.obolibrary.org/obo/hp.owl",
+                     "version" : "2020-12-07"
+                  },
+                  {
+                     "id" : "orphanet",
+                     "iriPrefix" : "http://www.orpha.net/ORDO/Orphanet_",
+                     "name" : "Orphanet Rare Disease Ontology",
+                     "namespacePrefix" : "Orphanet",
+                     "url" : "http://orpha.net/ontology/ORDO_en_3.1.owl",
+                     "version" : "3.1"
+                  },
+                  {
+                     "id" : "hgnc",
+                     "iriPrefix" : "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/",
+                     "name" : "HUGO Gene Nomenclature Committee",
+                     "namespacePrefix" : "HGNC",
+                     "url" : "https://www.genenames.org",
+                     "version" : "2021-01-13"
+                  },
+                  {
+                     "id" : "mim",
+                     "iriPrefix" : "https://omim.org/entry/",
+                     "name" : "Online Mendelian Inheritance in Man",
+                     "namespacePrefix" : "OMIM",
+                     "url" : "https://omim.org/",
+                     "version" : "2021-01-21"
+                  }
+               ]
+            }
+         }
+      },
+      "phenotypicFeatures" : [],
+      "sex" : {
+         "id" : "NCIT:C20197",
+         "label" : "male"
+      }
+   },
+   {
+      "diseases" : [],
+      "id" : "P0007507",
+      "info" : {
+         "dateOfBirth" : "2012-01-01T00:00:00Z",
+         "interpretation" : {
+            "phenopacket" : {
+               "metadata" : {
+                  "created" : "2021-04-21T09:42:24.702Z",
+                  "resources" : [
+                     {
+                        "id" : "hp",
+                        "iriPrefix" : "http://purl.obolibrary.org/obo/HP_",
+                        "name" : "Human Phenotype Ontology",
+                        "namespacePrefix" : "HP",
+                        "url" : "http://purl.obolibrary.org/obo/hp.owl",
+                        "version" : "2020-12-07"
+                     },
+                     {
+                        "id" : "orphanet",
+                        "iriPrefix" : "http://www.orpha.net/ORDO/Orphanet_",
+                        "name" : "Orphanet Rare Disease Ontology",
+                        "namespacePrefix" : "Orphanet",
+                        "url" : "http://orpha.net/ontology/ORDO_en_3.1.owl",
+                        "version" : "3.1"
+                     },
+                     {
+                        "id" : "hgnc",
+                        "iriPrefix" : "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/",
+                        "name" : "HUGO Gene Nomenclature Committee",
+                        "namespacePrefix" : "HGNC",
+                        "url" : "https://www.genenames.org",
+                        "version" : "2021-01-13"
+                     },
+                     {
+                        "id" : "mim",
+                        "iriPrefix" : "https://omim.org/entry/",
+                        "name" : "Online Mendelian Inheritance in Man",
+                        "namespacePrefix" : "OMIM",
+                        "url" : "https://omim.org/",
+                        "version" : "2021-01-21"
+                     }
+                  ]
+               },
+               "resolutionStatus" : "SOLVED"
+            }
+         },
+         "phenopacket" : {
+            "metadata" : {
+               "created" : "2021-04-21T09:42:24.702Z",
+               "resources" : [
+                  {
+                     "id" : "hp",
+                     "iriPrefix" : "http://purl.obolibrary.org/obo/HP_",
+                     "name" : "Human Phenotype Ontology",
+                     "namespacePrefix" : "HP",
+                     "url" : "http://purl.obolibrary.org/obo/hp.owl",
+                     "version" : "2020-12-07"
+                  },
+                  {
+                     "id" : "orphanet",
+                     "iriPrefix" : "http://www.orpha.net/ORDO/Orphanet_",
+                     "name" : "Orphanet Rare Disease Ontology",
+                     "namespacePrefix" : "Orphanet",
+                     "url" : "http://orpha.net/ontology/ORDO_en_3.1.owl",
+                     "version" : "3.1"
+                  },
+                  {
+                     "id" : "hgnc",
+                     "iriPrefix" : "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/",
+                     "name" : "HUGO Gene Nomenclature Committee",
+                     "namespacePrefix" : "HGNC",
+                     "url" : "https://www.genenames.org",
+                     "version" : "2021-01-13"
+                  },
+                  {
+                     "id" : "mim",
+                     "iriPrefix" : "https://omim.org/entry/",
+                     "name" : "Online Mendelian Inheritance in Man",
+                     "namespacePrefix" : "OMIM",
+                     "url" : "https://omim.org/",
+                     "version" : "2021-01-21"
+                  }
+               ]
+            }
+         }
+      },
+      "phenotypicFeatures" : [
+         {
+            "excluded" : true,
+            "featureType" : {
+               "id" : "HP:0007281",
+               "label" : "Developmental stagnation"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0000252",
+               "label" : "Microcephaly"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0001250",
+               "label" : "Seizures"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0001270",
+               "label" : "Motor delay"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0002013",
+               "label" : "Vomiting"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0002240",
+               "label" : "Hepatomegaly"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0002333",
+               "label" : "Motor deterioration"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0002376",
+               "label" : "Developmental regression"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0002490",
+               "label" : "Increased CSF lactate"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0002922",
+               "label" : "Increased CSF protein"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0003128",
+               "label" : "Lactic acidosis"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0003390",
+               "label" : "Sensory axonal neuropathy"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0003739",
+               "label" : "Myoclonic spasms"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0004325",
+               "label" : "Decreased body weight"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0006887",
+               "label" : "Intellectual disability, progressive"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0007002",
+               "label" : "Motor axonal neuropathy"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0012758",
+               "label" : "Neurodevelopmental delay"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0100543",
+               "label" : "Cognitive impairment"
+            }
+         },
+         {
+            "excluded" : false,
+            "featureType" : {
+               "id" : "HP:0200134",
+               "label" : "Epileptic encephalopathy"
+            }
+         }
+      ],
+      "sex" : {
+         "id" : "NCIT:C20197",
+         "label" : "male"
+      }
+   }
+]
