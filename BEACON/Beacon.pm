@@ -118,11 +118,11 @@ sub vcf2bff {
 
     # Script submission
     my $input_abs = abs_path($input);    # Mandatory to be abs_path
-    say 'Debg: *** cwd: ', cwd, ' ***' if $debug;
+    say 'Dbg' . $debug . ': *** cwd: ', cwd, ' ***' if $debug;
     my $cmd = "cd $dir; bash $script $input_abs > $script_log 2>&1";
-    say 'Debg: *** Submitting => ', $cmd, ' ***' if $debug;
+    say 'Dbg' . $debug . ': *** Submitting => ', $cmd, ' ***' if $debug;
     submit_cmd( $cmd, $script_path, $script_log_path, $debug );
-    say 'Debg: *** cwd: ', cwd, ' ***' if $debug;
+    say 'Dbg' . $debug . ': *** cwd: ', cwd, ' ***' if $debug;
     return 1;
 }
 
@@ -146,7 +146,8 @@ sub bff2html {
     my $tmpdir      = $self->{tmpdir};
     my $browser_dir = $self->{browserdir};
     my $web_dir     = catdir( $browser_dir, 'web' );
-    my $panel_dir   = $self->{paneldir}, my $debug = $self->{debug};
+    my $panel_dir   = $self->{paneldir};
+    my $debug = $self->{debug};
     my $verbose     = $self->{verbose};
 
     # Parameters for the script
@@ -173,10 +174,10 @@ sub bff2html {
     # Script submission
     my $input_abs = abs_path($input);    # Mandatory to be abs_path
     my $cmd = "cd $dir; bash $script $input_abs $jobid > $script_log 2>&1";
-    say 'Debg: *** cwd: ', cwd, ' ***' if $debug;
-    say 'Debg: *** Submitting => ', $cmd, '***' if $debug;
+    say 'Dbg' . $debug . ': *** cwd: ', cwd, ' ***' if $debug;
+    say 'Dbg' . $debug . ': *** Submitting => ', $cmd, '***' if $debug;
     submit_cmd( $cmd, $script_path, $script_log_path, $debug );
-    say 'Debg: *** cwd: ', cwd, ' ***' if $debug;
+    say 'Dbg' . $debug . ': *** cwd: ', cwd, ' ***' if $debug;
     return 1;
 }
 
@@ -265,11 +266,11 @@ sub bff2mongodb {
 
     # Script submission
     my $cmd = "cd $dir; bash $script > $script_log 2>&1";
-    say 'Debg: *** cwd: ', cwd, ' ***' if $debug;
-    say 'Debg: *** Submitting => ', $cmd, '***' if $debug;
+    say 'Dbg' . $debug . ': *** cwd: ', cwd, ' ***' if $debug;
+    say 'Dbg' . $debug . ': *** Submitting => ', $cmd, '***' if $debug;
     submit_cmd( $cmd, $script_path, $script_log_path, $debug );
     check_mongoimport($script_log_path);
-    say 'Debg: *** cwd: ', cwd, ' ***' if $debug;
+    say 'Dbg' . $debug . ': *** cwd: ', cwd, ' ***' if $debug;
     return 1;
 }
 
