@@ -268,7 +268,7 @@ To perform all these taks you'll need:
 
 - (Optional) Specify the number of cores (only for VCF processing!)
 
-    The number of threads/cores you want to use for the job. In this regard (since SnpEff does not deal well with parallelization) we recommend using `-n 1` and running multiple simultaneous jobs with GNU parallel or the included [queue system](https://github.com/mrueda/Beacon2/tree/main/utils/bff_queue)). The software scales linearly {O}(n) with the number of variants present in the input file. The easiest way is to run one job per chromosome, but if you are in a hurry and have many cores you can split each chromosome into smaller vcfs.
+    The number of threads/cores you want to use for the job. In this regard (since SnpEff does not deal well with parallelization) we recommend using `-n 1` and running multiple simultaneous jobs with GNU `parallel` or the included [queue system](https://github.com/mrueda/Beacon2/tree/main/utils/bff_queue)). The software scales linearly {O}(n) with the number of variants present in the input file. The easiest way is to run one job per chromosome, but if you are in a hurry and have many cores you can split each chromosome into smaller vcfs.
 
 Beacon will create an independent project directory `projectdir` and store all needed information needed there. Thus, many concurrent calculations are supported.
 Note that `beacon` will treat your data as _read-only_ (i.e., will not modify your original files).

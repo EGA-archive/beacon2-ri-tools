@@ -495,7 +495,7 @@ A parameters text file that will contain specific values needed for the job.
 
 =item * (Optional) Specify the number of cores (only for VCF processing!)
 
-The number of threads/cores you want to use for the job. In this regard (since SnpEff does not deal well with parallelization) we recommend using C<-n 1> and running multiple simultaneous jobs with GNU parallel or the included L<queue system|https://github.com/mrueda/Beacon2/tree/main/utils/bff_queue>). The software scales linearly {O}(n) with the number of variants present in the input file. The easiest way is to run one job per chromosome, but if you are in a hurry and have many cores you can split each chromosome into smaller vcfs.
+The number of threads/cores you want to use for the job. In this regard (since SnpEff does not deal well with parallelization) we recommend using C<-n 1> and running multiple simultaneous jobs with GNU C<parallel> or the included L<queue system|https://github.com/mrueda/Beacon2/tree/main/utils/bff_queue>). The software scales linearly {O}(n) with the number of variants present in the input file. The easiest way is to run one job per chromosome, but if you are in a hurry and have many cores you can split each chromosome into smaller vcfs.
 
 =back
 
