@@ -246,7 +246,7 @@ sub bff2mongodb {
       . qq( | \$mongoimport --jsonArray --uri "\$mongodburi" --collection genomicVariations || echo "Could not load <$bff->{genomicVariationsVcf}> for <genomicVariations>")
       . "\n"
       . qq(echo "Indexing collection...genomicVariations[Vcf]") . "\n"
-      . qq(\$mongosh "\$mongodburi"<<EOF\ndisableTelemetry()\ndb.genomicVariations.createIndex( {"\\\$**": 1}, {name: "genomicVariations"} )\nquit()\nEOF)
+      . qq(\$mongosh "\$mongodburi"<<EOF\ndisableTelemetry()\n/* Single field indexes */\ndb.genomicVariations.createIndex( {"\\\$**": 1}, {name: "single_field_genomicVariations"} )\n/* Text indexes */\ndb.genomicVariations.createIndex( {"\\\$**": "text"}, {name: "text_genomicVariations"} )\nquit()\nEOF)
       : '';
 
     # Prepare variables

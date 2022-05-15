@@ -50,7 +50,10 @@ do
  echo "Indexing collection...$collection"
  $mongosh "$mongodburi" << EOF
 disableTelemetry()
-db.$collection.createIndex( {"\$**": 1}, {name: "$collection"} )
+/* Single field indexes */
+db.$collection.createIndex( {"\$**": 1}, {name: "single_field_$collection"} )
+/* Text indexes */
+db.$collection.createIndex( {"\$**": "text"}, {name: "text_$collection"} )
 quit()
 EOF
 done

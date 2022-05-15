@@ -25,7 +25,9 @@ Rueda, M, Ariosa R. "Beacon v2 Reference Implementation: a software for federate
 
 # SUMMARY
 
-A script that converts Phenopackets PXF (JSON) to BFF (JSON)
+A script that converts Phenopackets PXF (JSON) to BFF (JSON).
+
+_NB:_ The script was created to parse [RD\_Connect synthetic data](https://ega-archive.org/datasets/EGAD00001008392). See examples in the `in` and `out` directories. The script is **UNTESTED** for other PXFs.
 
 # HOW TO RUN PXF2BFF
 
