@@ -27,6 +27,8 @@ Rueda, M, Ariosa R. "Beacon v2 Reference Implementation: a software for federate
 
 A script that converts Phenopackets PXF (JSON) to BFF (JSON).
 
+Note that PXF contain one individual per file (1 JSON document), whereas BFF (majoritarily) contain multiple inviduals per file (JSON array of documentsa). Thus, the input should be PXF JSON from, say, the same dataset, and the output will be a unique `individuals.json` file.
+
 _NB:_ The script was created to parse [RD\_Connect synthetic data](https://ega-archive.org/datasets/EGAD00001008392). See examples in the `in` and `out` directories. The script is **UNTESTED** for other PXFs.
 
 # HOW TO RUN PXF2BFF
@@ -50,7 +52,7 @@ For executing pxf2bff you will need:
 
 - Input file(s):
 
-    A list of Phenopackets JSON files
+    A list of Phenopackets JSON files (normally from the same dataset). Note that PXFs only contain ONE individual per file.
 
 **Examples:**
 
