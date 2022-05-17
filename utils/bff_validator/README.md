@@ -37,6 +37,7 @@ bff-validator: A script that validates metadata (XLSX|JSON) against Beacon v2 Mo
 The script runs on command-line Linux (tested on Debian-based distribution). Perl 5 is installed by default on Linux, 
 but you might need to manually install a few CPAN modules.
 
+    * File::Which
     * JSON::XS
     * JSON::Validator
     * List::MoreUtils
@@ -51,7 +52,7 @@ First we install cpanminus (with sudo privileges):
 
 Then the modules:
 
-    $ cpanm --sudo JSON::XS JSON::Validator List::MoreUtils Term::ANSIColor Text::CSV_XS Path::Tiny Text::Unidecode
+    $ cpanm --sudo File::Which JSON::XS JSON::Validator List::MoreUtils Term::ANSIColor Text::CSV_XS Path::Tiny Text::Unidecode
 
 Also, we're using _xlsx2csv_, which is a python script. 
 
