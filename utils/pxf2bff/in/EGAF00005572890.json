@@ -1,17 +1,24 @@
 {
   "phenopacket": {
-    "id": "P0007500",
+    "id": "P0008910",
     "subject": {
-      "id": "P0007500",
+      "id": "P0008910",
       "dateOfBirth": "unknown-01-01T00:00:00Z",
       "sex": "FEMALE"
     },
-    "phenotypicFeatures": [],
+    "phenotypicFeatures": [
+      {
+        "type": {
+          "id": "HP:0100615",
+          "label": "Ovarian neoplasm"
+        }
+      }
+    ],
     "diseases": [],
     "genes": [],
     "variants": [],
     "meta_data": {
-      "created": "2021-04-21T09:37:19.994Z",
+      "created": "2021-04-21T09:48:57.456Z",
       "resources": [
         {
           "id": "hp",
@@ -49,21 +56,28 @@
     }
   },
   "interpretation": {
-    "id": "P0007500",
+    "id": "P0008910",
     "resolutionStatus": "UNSOLVED",
     "phenopacket": {
-      "id": "P0007500",
+      "id": "P0008910",
       "subject": {
-        "id": "P0007500",
+        "id": "P0008910",
         "dateOfBirth": "unknown-01-01T00:00:00Z",
         "sex": "FEMALE"
       },
-      "phenotypicFeatures": [],
+      "phenotypicFeatures": [
+        {
+          "type": {
+            "id": "HP:0100615",
+            "label": "Ovarian neoplasm"
+          }
+        }
+      ],
       "diseases": [],
       "genes": [],
       "variants": [],
       "meta_data": {
-        "created": "2021-04-21T09:37:19.994Z",
+        "created": "2021-04-21T09:48:57.456Z",
         "resources": [
           {
             "id": "hp",

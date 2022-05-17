@@ -2,7 +2,7 @@
 #
 #   A script that converts Phenopackets PXF (JSON) to BFF (JSON)
 #
-#   Last Modified: May/10/2022
+#   Last Modified: May/17/2022
 #
 #   Version 2.0.0
 #
@@ -109,7 +109,7 @@ sub map_pxf2bff {
     # diseases
     # =================
     $ind->{diseases} = [ map { $_ = { "diseaseCode" => $_->{term} } }
-          @{ $interpretation->{phenopacket}{diseases} } ];
+          @{ $phenopacket->{diseases} } ];
 
     # ==
     # id
@@ -119,12 +119,21 @@ sub map_pxf2bff {
     # ====
     # info
     # ====
-    $ind->{info}{dateOfBirth} = $phenopacket->{subject}{dateOfBirth};
+     
+    # **** $data->{phenopacket} ****
+    $ind->{info}{phenopacket}{dateOfBirth} = $phenopacket->{subject}{dateOfBirth};
+    $ind->{info}{phenopacket}{genes} =  $phenopacket->{genes};
     $ind->{info}{phenopacket}{metadata} = $phenopacket->{meta_data};
-    $ind->{info}{interpretation}{phenopacket}{metadata} =
-      $interpretation->{phenopacket}{meta_data};
-    $ind->{info}{interpretation}{phenopacket}{resolutionStatus} =
-      $interpretation->{resolutionStatus};
+    $ind->{info}{phenopacket}{variants} = $phenopacket->{variants};
+
+    # **** $data->{interpretation} ****
+    $ind->{info}{interpretation}{diagnosis} = $interpretation->{diagnosis};
+    $ind->{info}{interpretation}{diseases} = $interpretation->{diseases}; # same info as $data->{phenopacket}{diseases}
+    $ind->{info}{interpretation}{resolutionStatus} = $interpretation->{resolutionStatus};
+    $ind->{info}{interpretation}{phenotypicFeatures} = $interpretation->{phenotypicFeatures}; # same info as $data->{phenopacket}{phenotypicFeatures}
+    $ind->{info}{interpretation}{phenopacket}{metadata} = $interpretation->{phenopacket}{meta_data};
+    $ind->{info}{interpretation}{genes} =  $interpretation->{genes};
+    $ind->{info}{interpretation}{variants} = $interpretation->{variants};
 
     # ==================
     # phenotypicFeatures
