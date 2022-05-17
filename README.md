@@ -84,6 +84,7 @@ For the most part, we sticked to Perl core modules. However, we ended up using a
     * Data::Structure::Util  # Miscellanea utils for data structures  
     * JSON:XS                # To deal with JSON files
     * Path::Tiny             # For I/O
+    * PerlIO::gzip           # For gzip operations
     * Term::ANSIColor        # To provide colors to STDOUT
     * YAML::XS               # To deal with YAML files
 
@@ -99,7 +100,7 @@ First we install `cpmanminus` utility:
 
 Second we use `cpanm` to install the CPAN modules:
 
-    $ cpanm --sudo Term::ANSIColor JSON::XS YAML::XS Path::Tiny Data::Structure::Util
+    $ cpanm --sudo Term::ANSIColor JSON::XS YAML::XS Path::Tiny PerlIO::gzip Data::Structure::Util
 
 Also, to read the documentation you'll need `perldoc` that may or may not be installed in your Linux distribution:
 
