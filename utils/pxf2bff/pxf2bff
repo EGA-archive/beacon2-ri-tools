@@ -110,9 +110,9 @@ sub map_pxf2bff {
     # NB2: In PXF some terms are = []
     my $ind;
 
-    # =================
+    # ========
     # diseases
-    # =================
+    # ========
     $ind->{diseases} =
       [ map { $_ = { "diseaseCode" => $_->{term} } }
           @{ $phenopacket->{diseases} } ]
