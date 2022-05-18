@@ -496,13 +496,14 @@ sub mapping2beacon {
     # START MAPPING TO BEACON V2 TERMS #
     ####################################
 
-    # NB: We deliberately create some hashes INSIDE the method <mapping2beacon>
-    #     We lose a few seconds overall (tested), but it's more convenient for coding
+    # NB1: In general, we'll only load terms that exist
+    # NB2: We deliberately create some hashes INSIDE the method <mapping2beacon>
+    #      We lose a few seconds overall (tested), but it's more convenient for coding
 
     my $genomic_variations;
 
     # =====
-    # _info => Internal field (not in the schema)
+    # _info => INTERNAL FIELD (not in the schema)
     # =====
     $genomic_variations->{_info} = $cursor_crg->{INFO};
 
@@ -793,9 +794,9 @@ sub mapping2beacon {
 
     # NB: snpsift annotate was run w/o <-a>, thus we should not get '.' on empty fields
     my %map_variant_level_data = (
-        clinicalDb         => 'CLINVAR_CLNDISDB',      # Internal field
+        clinicalDb         => 'CLINVAR_CLNDISDB',      # INTERNAL FIELD
         clinicalRelevance  => 'CLINVAR_CLNSIG',
-        clinicalRelevances => 'CLINVAR_CLNSIGINCL',    # Internal field
+        clinicalRelevances => 'CLINVAR_CLNSIGINCL',    # INTERNAL FIELD
         conditionId        => 'CLINVAR_CLNDN'
     );
 

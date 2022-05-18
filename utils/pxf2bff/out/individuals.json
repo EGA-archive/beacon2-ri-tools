@@ -5,10 +5,8 @@
       "info" : {
          "interpretation" : {
             "diagnosis" : [],
-            "diseases" : null,
-            "genes" : null,
             "phenopacket" : {
-               "metadata" : {
+               "meta_data" : {
                   "created" : "2021-04-21T09:37:19.994Z",
                   "resources" : [
                      {
@@ -46,14 +44,12 @@
                   ]
                }
             },
-            "phenotypicFeatures" : null,
-            "resolutionStatus" : "UNSOLVED",
-            "variants" : null
+            "resolutionStatus" : "UNSOLVED"
          },
          "phenopacket" : {
             "dateOfBirth" : "unknown-01-01T00:00:00Z",
             "genes" : [],
-            "metadata" : {
+            "meta_data" : {
                "created" : "2021-04-21T09:37:19.994Z",
                "resources" : [
                   {
@@ -105,10 +101,8 @@
       "info" : {
          "interpretation" : {
             "diagnosis" : [],
-            "diseases" : null,
-            "genes" : null,
             "phenopacket" : {
-               "metadata" : {
+               "meta_data" : {
                   "created" : "2021-04-21T09:33:50.417Z",
                   "resources" : [
                      {
@@ -146,14 +140,12 @@
                   ]
                }
             },
-            "phenotypicFeatures" : null,
-            "resolutionStatus" : "UNSOLVED",
-            "variants" : null
+            "resolutionStatus" : "UNSOLVED"
          },
          "phenopacket" : {
             "dateOfBirth" : "unknown-01-01T00:00:00Z",
             "genes" : [],
-            "metadata" : {
+            "meta_data" : {
                "created" : "2021-04-21T09:33:50.417Z",
                "resources" : [
                   {
@@ -218,10 +210,8 @@
       "info" : {
          "interpretation" : {
             "diagnosis" : [],
-            "diseases" : null,
-            "genes" : null,
             "phenopacket" : {
-               "metadata" : {
+               "meta_data" : {
                   "created" : "2021-04-21T09:32:38.488Z",
                   "resources" : [
                      {
@@ -259,14 +249,12 @@
                   ]
                }
             },
-            "phenotypicFeatures" : null,
-            "resolutionStatus" : "SOLVED",
-            "variants" : null
+            "resolutionStatus" : "SOLVED"
          },
          "phenopacket" : {
             "dateOfBirth" : "2013-01-01T00:00:00Z",
             "genes" : [],
-            "metadata" : {
+            "meta_data" : {
                "created" : "2021-04-21T09:32:38.488Z",
                "resources" : [
                   {
@@ -396,10 +384,8 @@
       "info" : {
          "interpretation" : {
             "diagnosis" : [],
-            "diseases" : null,
-            "genes" : null,
             "phenopacket" : {
-               "metadata" : {
+               "meta_data" : {
                   "created" : "2021-04-21T09:38:19.980Z",
                   "resources" : [
                      {
@@ -437,14 +423,12 @@
                   ]
                }
             },
-            "phenotypicFeatures" : null,
-            "resolutionStatus" : "SOLVED",
-            "variants" : null
+            "resolutionStatus" : "SOLVED"
          },
          "phenopacket" : {
             "dateOfBirth" : "1980-01-01T00:00:00Z",
             "genes" : [],
-            "metadata" : {
+            "meta_data" : {
                "created" : "2021-04-21T09:38:19.980Z",
                "resources" : [
                   {
@@ -518,10 +502,8 @@
       "info" : {
          "interpretation" : {
             "diagnosis" : [],
-            "diseases" : null,
-            "genes" : null,
             "phenopacket" : {
-               "metadata" : {
+               "meta_data" : {
                   "created" : "2021-04-21T09:38:48.402Z",
                   "resources" : [
                      {
@@ -559,14 +541,12 @@
                   ]
                }
             },
-            "phenotypicFeatures" : null,
-            "resolutionStatus" : "UNSOLVED",
-            "variants" : null
+            "resolutionStatus" : "UNSOLVED"
          },
          "phenopacket" : {
             "dateOfBirth" : "unknown-01-01T00:00:00Z",
             "genes" : [],
-            "metadata" : {
+            "meta_data" : {
                "created" : "2021-04-21T09:38:48.402Z",
                "resources" : [
                   {
@@ -618,10 +598,8 @@
       "info" : {
          "interpretation" : {
             "diagnosis" : [],
-            "diseases" : null,
-            "genes" : null,
             "phenopacket" : {
-               "metadata" : {
+               "meta_data" : {
                   "created" : "2021-04-21T09:39:45.571Z",
                   "resources" : [
                      {
@@ -659,14 +637,12 @@
                   ]
                }
             },
-            "phenotypicFeatures" : null,
-            "resolutionStatus" : "UNSOLVED",
-            "variants" : null
+            "resolutionStatus" : "UNSOLVED"
          },
          "phenopacket" : {
             "dateOfBirth" : "unknown-01-01T00:00:00Z",
             "genes" : [],
-            "metadata" : {
+            "meta_data" : {
                "created" : "2021-04-21T09:39:45.571Z",
                "resources" : [
                   {
@@ -754,10 +730,8 @@
       "info" : {
          "interpretation" : {
             "diagnosis" : [],
-            "diseases" : null,
-            "genes" : null,
             "phenopacket" : {
-               "metadata" : {
+               "meta_data" : {
                   "created" : "2021-04-21T09:40:55.665Z",
                   "resources" : [
                      {
@@ -795,14 +769,12 @@
                   ]
                }
             },
-            "phenotypicFeatures" : null,
-            "resolutionStatus" : "UNSOLVED",
-            "variants" : null
+            "resolutionStatus" : "UNSOLVED"
          },
          "phenopacket" : {
             "dateOfBirth" : "unknown-01-01T00:00:00Z",
             "genes" : [],
-            "metadata" : {
+            "meta_data" : {
                "created" : "2021-04-21T09:40:55.665Z",
                "resources" : [
                   {
@@ -854,10 +826,8 @@
       "info" : {
          "interpretation" : {
             "diagnosis" : [],
-            "diseases" : null,
-            "genes" : null,
             "phenopacket" : {
-               "metadata" : {
+               "meta_data" : {
                   "created" : "2021-04-21T09:41:40.867Z",
                   "resources" : [
                      {
@@ -895,14 +865,12 @@
                   ]
                }
             },
-            "phenotypicFeatures" : null,
-            "resolutionStatus" : "UNSOLVED",
-            "variants" : null
+            "resolutionStatus" : "UNSOLVED"
          },
          "phenopacket" : {
             "dateOfBirth" : "unknown-01-01T00:00:00Z",
             "genes" : [],
-            "metadata" : {
+            "meta_data" : {
                "created" : "2021-04-21T09:41:40.867Z",
                "resources" : [
                   {
@@ -954,10 +922,8 @@
       "info" : {
          "interpretation" : {
             "diagnosis" : [],
-            "diseases" : null,
-            "genes" : null,
             "phenopacket" : {
-               "metadata" : {
+               "meta_data" : {
                   "created" : "2021-04-21T09:40:31.348Z",
                   "resources" : [
                      {
@@ -995,14 +961,12 @@
                   ]
                }
             },
-            "phenotypicFeatures" : null,
-            "resolutionStatus" : "UNSOLVED",
-            "variants" : null
+            "resolutionStatus" : "UNSOLVED"
          },
          "phenopacket" : {
             "dateOfBirth" : "2002-01-01T00:00:00Z",
             "genes" : [],
-            "metadata" : {
+            "meta_data" : {
                "created" : "2021-04-21T09:40:31.348Z",
                "resources" : [
                   {
@@ -1090,10 +1054,8 @@
       "info" : {
          "interpretation" : {
             "diagnosis" : [],
-            "diseases" : null,
-            "genes" : null,
             "phenopacket" : {
-               "metadata" : {
+               "meta_data" : {
                   "created" : "2021-04-21T09:42:24.702Z",
                   "resources" : [
                      {
@@ -1131,9 +1093,7 @@
                   ]
                }
             },
-            "phenotypicFeatures" : null,
-            "resolutionStatus" : "SOLVED",
-            "variants" : null
+            "resolutionStatus" : "SOLVED"
          },
          "phenopacket" : {
             "dateOfBirth" : "2012-01-01T00:00:00Z",
@@ -1143,7 +1103,7 @@
                   "symbol" : "OPA1"
                }
             ],
-            "metadata" : {
+            "meta_data" : {
                "created" : "2021-04-21T09:42:24.702Z",
                "resources" : [
                   {
@@ -1329,10 +1289,8 @@
       "info" : {
          "interpretation" : {
             "diagnosis" : [],
-            "diseases" : null,
-            "genes" : null,
             "phenopacket" : {
-               "metadata" : {
+               "meta_data" : {
                   "created" : "2021-04-21T09:42:56.635Z",
                   "resources" : [
                      {
@@ -1370,14 +1328,12 @@
                   ]
                }
             },
-            "phenotypicFeatures" : null,
-            "resolutionStatus" : "UNSOLVED",
-            "variants" : null
+            "resolutionStatus" : "UNSOLVED"
          },
          "phenopacket" : {
             "dateOfBirth" : "unknown-01-01T00:00:00Z",
             "genes" : [],
-            "metadata" : {
+            "meta_data" : {
                "created" : "2021-04-21T09:42:56.635Z",
                "resources" : [
                   {
@@ -1429,10 +1385,8 @@
       "info" : {
          "interpretation" : {
             "diagnosis" : [],
-            "diseases" : null,
-            "genes" : null,
             "phenopacket" : {
-               "metadata" : {
+               "meta_data" : {
                   "created" : "2021-04-21T09:43:53.656Z",
                   "resources" : [
                      {
@@ -1470,14 +1424,12 @@
                   ]
                }
             },
-            "phenotypicFeatures" : null,
-            "resolutionStatus" : "UNSOLVED",
-            "variants" : null
+            "resolutionStatus" : "UNSOLVED"
          },
          "phenopacket" : {
             "dateOfBirth" : "unknown-01-01T00:00:00Z",
             "genes" : [],
-            "metadata" : {
+            "meta_data" : {
                "created" : "2021-04-21T09:43:53.656Z",
                "resources" : [
                   {
@@ -1536,10 +1488,8 @@
       "info" : {
          "interpretation" : {
             "diagnosis" : [],
-            "diseases" : null,
-            "genes" : null,
             "phenopacket" : {
-               "metadata" : {
+               "meta_data" : {
                   "created" : "2021-04-21T09:45:31.121Z",
                   "resources" : [
                      {
@@ -1577,14 +1527,12 @@
                   ]
                }
             },
-            "phenotypicFeatures" : null,
-            "resolutionStatus" : "UNSOLVED",
-            "variants" : null
+            "resolutionStatus" : "UNSOLVED"
          },
          "phenopacket" : {
             "dateOfBirth" : "1982-01-01T00:00:00Z",
             "genes" : [],
-            "metadata" : {
+            "meta_data" : {
                "created" : "2021-04-21T09:45:31.121Z",
                "resources" : [
                   {
@@ -1665,10 +1613,8 @@
       "info" : {
          "interpretation" : {
             "diagnosis" : [],
-            "diseases" : null,
-            "genes" : null,
             "phenopacket" : {
-               "metadata" : {
+               "meta_data" : {
                   "created" : "2021-04-21T09:48:57.456Z",
                   "resources" : [
                      {
@@ -1706,14 +1652,12 @@
                   ]
                }
             },
-            "phenotypicFeatures" : null,
-            "resolutionStatus" : "UNSOLVED",
-            "variants" : null
+            "resolutionStatus" : "UNSOLVED"
          },
          "phenopacket" : {
             "dateOfBirth" : "unknown-01-01T00:00:00Z",
             "genes" : [],
-            "metadata" : {
+            "meta_data" : {
                "created" : "2021-04-21T09:48:57.456Z",
                "resources" : [
                   {
@@ -1773,10 +1717,8 @@
       "info" : {
          "interpretation" : {
             "diagnosis" : [],
-            "diseases" : null,
-            "genes" : null,
             "phenopacket" : {
-               "metadata" : {
+               "meta_data" : {
                   "created" : "2021-04-21T09:47:54.584Z",
                   "resources" : [
                      {
@@ -1814,14 +1756,12 @@
                   ]
                }
             },
-            "phenotypicFeatures" : null,
-            "resolutionStatus" : "UNKNOWN",
-            "variants" : null
+            "resolutionStatus" : "UNKNOWN"
          },
          "phenopacket" : {
             "dateOfBirth" : "unknown-01-01T00:00:00Z",
             "genes" : [],
-            "metadata" : {
+            "meta_data" : {
                "created" : "2021-04-21T09:47:54.584Z",
                "resources" : [
                   {
@@ -1880,10 +1820,8 @@
       "info" : {
          "interpretation" : {
             "diagnosis" : [],
-            "diseases" : null,
-            "genes" : null,
             "phenopacket" : {
-               "metadata" : {
+               "meta_data" : {
                   "created" : "2021-04-21T09:50:13.849Z",
                   "resources" : [
                      {
@@ -1921,14 +1859,12 @@
                   ]
                }
             },
-            "phenotypicFeatures" : null,
-            "resolutionStatus" : "UNSOLVED",
-            "variants" : null
+            "resolutionStatus" : "UNSOLVED"
          },
          "phenopacket" : {
             "dateOfBirth" : "2019-01-01T00:00:00Z",
             "genes" : [],
-            "metadata" : {
+            "meta_data" : {
                "created" : "2021-04-21T09:50:13.849Z",
                "resources" : [
                   {
@@ -2016,10 +1952,8 @@
       "info" : {
          "interpretation" : {
             "diagnosis" : [],
-            "diseases" : null,
-            "genes" : null,
             "phenopacket" : {
-               "metadata" : {
+               "meta_data" : {
                   "created" : "2021-04-21T09:52:45.533Z",
                   "resources" : [
                      {
@@ -2057,14 +1991,12 @@
                   ]
                }
             },
-            "phenotypicFeatures" : null,
-            "resolutionStatus" : "UNKNOWN",
-            "variants" : null
+            "resolutionStatus" : "UNKNOWN"
          },
          "phenopacket" : {
             "dateOfBirth" : "1986-01-01T00:00:00Z",
             "genes" : [],
-            "metadata" : {
+            "meta_data" : {
                "created" : "2021-04-21T09:52:45.533Z",
                "resources" : [
                   {
@@ -2116,10 +2048,8 @@
       "info" : {
          "interpretation" : {
             "diagnosis" : [],
-            "diseases" : null,
-            "genes" : null,
             "phenopacket" : {
-               "metadata" : {
+               "meta_data" : {
                   "created" : "2021-04-21T09:51:14.643Z",
                   "resources" : [
                      {
@@ -2157,14 +2087,12 @@
                   ]
                }
             },
-            "phenotypicFeatures" : null,
-            "resolutionStatus" : "UNKNOWN",
-            "variants" : null
+            "resolutionStatus" : "UNKNOWN"
          },
          "phenopacket" : {
             "dateOfBirth" : "1987-01-01T00:00:00Z",
             "genes" : [],
-            "metadata" : {
+            "meta_data" : {
                "created" : "2021-04-21T09:51:14.643Z",
                "resources" : [
                   {

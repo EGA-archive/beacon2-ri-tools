@@ -2,7 +2,7 @@
 #
 #   A script that converts Phenopackets PXF (JSON) to BFF (JSON)
 #
-#   Last Modified: May/17/2022
+#   Last Modified: May/18/2022
 #
 #   Version 2.0.0
 #
@@ -52,13 +52,13 @@ sub pxf2bff {
 
     # Reading arguments
     GetOptions(
-        'input|i=s{1,}'  => \my @in_files,                             # array
-        'out-dir|o=s'    => \$out_dir,                                 # string
-        'help|?'         => \my $help,                                 # flag
-        'man'            => \my $man,                                  # flag
-        'debug=i'        => \$debug,                                   # integer
-        'verbose'        => \$verbose,                                 # flag
-        'version|v'      => sub { say "$0 Version $version"; exit; }
+        'input|i=s{1,}' => \my @in_files,                             # array
+        'out-dir|o=s'   => \$out_dir,                                 # string
+        'help|?'        => \my $help,                                 # flag
+        'man'           => \my $man,                                  # flag
+        'debug=i'       => \$debug,                                   # integer
+        'verbose'       => \$verbose,                                 # flag
+        'version|v'     => sub { say "$0 Version $version"; exit; }
     ) or pod2usage(2);
     pod2usage(1)                              if $help;
     pod2usage( -verbose => 2, -exitval => 0 ) if $man;
@@ -102,38 +102,52 @@ sub map_pxf2bff {
     my $interpretation = $data->{interpretation};
     my $phenopacket    = $data->{phenopacket};
 
-    # Start mapping
+    ####################################
+    # START MAPPING TO BEACON V2 TERMS #
+    ####################################
+
+    # NB1: In general, we'll only load terms that exist
+    # NB2: In PXF some terms are = []
     my $ind;
 
     # =================
     # diseases
     # =================
-    $ind->{diseases} = [ map { $_ = { "diseaseCode" => $_->{term} } }
-          @{ $phenopacket->{diseases} } ];
+    $ind->{diseases} =
+      [ map { $_ = { "diseaseCode" => $_->{term} } }
+          @{ $phenopacket->{diseases} } ]
+      if exists $phenopacket->{diseases};
 
     # ==
     # id
     # ==
-    $ind->{id} = $phenopacket->{subject}{id};
+    $ind->{id} = $phenopacket->{subject}{id}
+      if exists $phenopacket->{subject}{id};
 
     # ====
     # info
     # ====
-     
+
     # **** $data->{phenopacket} ****
-    $ind->{info}{phenopacket}{dateOfBirth} = $phenopacket->{subject}{dateOfBirth};
-    $ind->{info}{phenopacket}{genes} =  $phenopacket->{genes};
-    $ind->{info}{phenopacket}{metadata} = $phenopacket->{meta_data};
-    $ind->{info}{phenopacket}{variants} = $phenopacket->{variants};
+    $ind->{info}{phenopacket}{dateOfBirth} =
+      $phenopacket->{subject}{dateOfBirth};
+    for my $term (qw (dateOfBirth genes meta_data variants)) {
+        $ind->{info}{phenopacket}{$term} = $phenopacket->{$term}
+          if exists $phenopacket->{$term};
+    }
 
     # **** $data->{interpretation} ****
-    $ind->{info}{interpretation}{diagnosis} = $interpretation->{diagnosis};
-    $ind->{info}{interpretation}{diseases} = $interpretation->{diseases}; # same info as $data->{phenopacket}{diseases}
-    $ind->{info}{interpretation}{resolutionStatus} = $interpretation->{resolutionStatus};
-    $ind->{info}{interpretation}{phenotypicFeatures} = $interpretation->{phenotypicFeatures}; # same info as $data->{phenopacket}{phenotypicFeatures}
-    $ind->{info}{interpretation}{phenopacket}{metadata} = $interpretation->{phenopacket}{meta_data};
-    $ind->{info}{interpretation}{genes} =  $interpretation->{genes};
-    $ind->{info}{interpretation}{variants} = $interpretation->{variants};
+    $ind->{info}{interpretation}{phenopacket}{meta_data} =
+      $interpretation->{phenopacket}{meta_data};
+
+    # <diseases> and <phenotypicFeatures> are identical to those of $data->{phenopacket}{diseases,phenotypicFeatures}
+    for my $term (
+        qw (diagnosis diseases resolutionStatus phenotypicFeatures genes variants)
+      )
+    {
+        $ind->{info}{interpretation}{$term} = $interpretation->{$term}
+          if exists $interpretation->{$term};
+    }
 
     # ==================
     # phenotypicFeatures
@@ -146,12 +160,18 @@ sub map_pxf2bff {
                 "featureType" => $_->{type}
             }
         } @{ $phenopacket->{phenotypicFeatures} }
-    ];
+      ]
+      if exists $phenopacket->{phenotypicFeatures};
 
     # ===
     # sex
     # ===
-    $ind->{sex} = map_sex( $phenopacket->{subject}{sex} );
+    $ind->{sex} = map_sex( $phenopacket->{subject}{sex} )
+      if exists $phenopacket->{subject}{sex};
+
+    ##################################
+    # END MAPPING TO BEACON V2 TERMS #
+    ##################################
 
     #    print Dumper $ind;
     return $ind;
