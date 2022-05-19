@@ -108,12 +108,12 @@ sub map_pxf2bff {
 
     # NB1: In general, we'll only load terms that exist
     # NB2: In PXF some terms are = []
-    my $ind;
+    my $individual;
 
     # ========
     # diseases
     # ========
-    $ind->{diseases} =
+    $individual->{diseases} =
       [ map { $_ = { "diseaseCode" => $_->{term} } }
           @{ $phenopacket->{diseases} } ]
       if exists $phenopacket->{diseases};
@@ -121,7 +121,7 @@ sub map_pxf2bff {
     # ==
     # id
     # ==
-    $ind->{id} = $phenopacket->{subject}{id}
+    $individual->{id} = $phenopacket->{subject}{id}
       if exists $phenopacket->{subject}{id};
 
     # ====
@@ -129,15 +129,15 @@ sub map_pxf2bff {
     # ====
 
     # **** $data->{phenopacket} ****
-    $ind->{info}{phenopacket}{dateOfBirth} =
+    $individual->{info}{phenopacket}{dateOfBirth} =
       $phenopacket->{subject}{dateOfBirth};
     for my $term (qw (dateOfBirth genes meta_data variants)) {
-        $ind->{info}{phenopacket}{$term} = $phenopacket->{$term}
+        $individual->{info}{phenopacket}{$term} = $phenopacket->{$term}
           if exists $phenopacket->{$term};
     }
 
     # **** $data->{interpretation} ****
-    $ind->{info}{interpretation}{phenopacket}{meta_data} =
+    $individual->{info}{interpretation}{phenopacket}{meta_data} =
       $interpretation->{phenopacket}{meta_data};
 
     # <diseases> and <phenotypicFeatures> are identical to those of $data->{phenopacket}{diseases,phenotypicFeatures}
@@ -145,14 +145,14 @@ sub map_pxf2bff {
         qw (diagnosis diseases resolutionStatus phenotypicFeatures genes variants)
       )
     {
-        $ind->{info}{interpretation}{$term} = $interpretation->{$term}
+        $individual->{info}{interpretation}{$term} = $interpretation->{$term}
           if exists $interpretation->{$term};
     }
 
     # ==================
     # phenotypicFeatures
     # ==================
-    $ind->{phenotypicFeatures} = [
+    $individual->{phenotypicFeatures} = [
         map {
             $_ = {
                 "excluded" =>
@@ -166,15 +166,15 @@ sub map_pxf2bff {
     # ===
     # sex
     # ===
-    $ind->{sex} = map_sex( $phenopacket->{subject}{sex} )
+    $individual->{sex} = map_sex( $phenopacket->{subject}{sex} )
       if exists $phenopacket->{subject}{sex};
 
     ##################################
     # END MAPPING TO BEACON V2 TERMS #
     ##################################
 
-    #    print Dumper $ind;
-    return $ind;
+    # print Dumper $individual;
+    return $individual;
 }
 
 sub map_sex {
