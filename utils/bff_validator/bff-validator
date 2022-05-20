@@ -3,7 +3,7 @@
 #   A script that validates metadata [XLSX|JSON] against
 #   Beacon v2 Models defaul schemas and serializes them to BFF (JSON)
 #
-#   Last Modified: May/12/2022
+#   Last Modified: May/19/2022
 #
 #   Version 2.0.0
 #
@@ -31,6 +31,7 @@ use autodie;
 use Getopt::Long;
 use Pod::Usage;
 use Data::Dumper;
+use FindBin qw($Bin);
 use Text::CSV_XS;
 use Text::Unidecode;
 use JSON::XS;
@@ -56,10 +57,9 @@ exit;
 sub validate_input_data {
 
     # Defining a few variables
-    my $version = '2.0.0';
-    my $schema_dir =
-'/media/mrueda/4TB/CRG_EGA/Project_Beacon/readthedocs/beacon-v2/bin/deref_schemas';
-    my $out_dir = '.';
+    my $version    = '2.0.0';
+    my $schema_dir = catdir( $Bin, 'deref_schemas' );
+    my $out_dir    = '.';
 
     # Reading arguments
     GetOptions(
@@ -302,7 +302,7 @@ sub validate_json {
             chomp $line;                     # \
             chop $line if $line =~ m/,$/;    #  (last line does not have comma)
 
-            my $row = decode_json($line);    # Decode to Perl data structure (input must be UTF-8)
+            my $row = decode_json($line); # Decode to Perl data structure (input must be UTF-8)
             my $error = validate_against_json_schema( $row, $json_schema );
 
             # Accumulate errors (if any) at array @json_errors
@@ -440,7 +440,7 @@ sub row2hash {
             # Example of HoHoA: datasets => dataUseConditions.duoDatause_[]
             my $tmp_ref =
               $excel{$key} =~ m/^\[/
-              ? decode_json( unidecode($excel{$key}) )
+              ? decode_json( unidecode( $excel{$key} ) )
               : \$excel{$key};
             $json = array2hash( $json, $terms, $tmp_ref );
         }
@@ -481,7 +481,7 @@ sub row2hash {
             # NB: We store references ($values) for both <strings> and <json>
             my $values =
               $excel{$key} =~ m/^\[/
-              ? decode_json( unidecode($excel{$key}) )
+              ? decode_json( unidecode( $excel{$key} ) )
               : [ split /,/, $excel{$key} ];
 
             # Finally we create a multidimensional hash inside $json
@@ -572,7 +572,7 @@ sub coerce_to_number_or_boolean {
 sub load_json_schema {
 
     my $schema_file = shift;
-    my $data = read_json($schema_file);
+    my $data        = read_json($schema_file);
 
     ##########################################################
     # Problem: We wanted to use $ref                         #
@@ -635,8 +635,8 @@ sub validate_against_json_schema {
 sub read_json {
 
     my $json_file = shift;
-    my $str  = path($json_file)->slurp_utf8;
-    my $json = decode_json($str); # Decode to Perl data structure
+    my $str       = path($json_file)->slurp_utf8;
+    my $json      = decode_json($str);           # Decode to Perl data structure
     return $json;
 }
 
@@ -781,7 +781,7 @@ B<B)> A set of JSON files that follow the Beacon Friendly Format. The files MUST
 
 =item Beacon v2 Models (with JSON pointers dereferenced)
 
-You should them at C<deref_schemas> directory.
+You should have them at C<deref_schemas> directory.
 
 
 =back
@@ -790,9 +790,11 @@ B<Examples:>
 
    $ ./bff-validator -i file.xlsx
 
-   $ $path/bff-validator -i file.xlsx --gv --schema-dir deref_schemas --out-dir my_bff_outdir
+   $ $path/bff-validator -i file.xlsx -o my_bff_outdir
 
    $ $path/bff-validator -i my_bff_indir/*json -s deref_schemas -o my_bff_outdir 
+
+   $ $path/bff-validator -i file.xlsx --gv --schema-dir deref_schemas --out-dir my_bff_outdir
 
 =head2 TIPS ON FILLING OUT THE EXCEL TEMPLATE
 

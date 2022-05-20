@@ -78,15 +78,17 @@ For executing bff-validator you will need:
 
 - Beacon v2 Models (with JSON pointers dereferenced)
 
-    You should them at `deref_schemas` directory.
+    You should have them at `deref_schemas` directory.
 
 **Examples:**
 
     $ ./bff-validator -i file.xlsx
 
-    $ $path/bff-validator -i file.xlsx --gv --schema-dir deref_schemas --out-dir my_bff_outdir
+    $ $path/bff-validator -i file.xlsx -o my_bff_outdir
 
     $ $path/bff-validator -i my_bff_indir/*json -s deref_schemas -o my_bff_outdir 
+
+    $ $path/bff-validator -i file.xlsx --gv --schema-dir deref_schemas --out-dir my_bff_outdir
 
 ## TIPS ON FILLING OUT THE EXCEL TEMPLATE
 
