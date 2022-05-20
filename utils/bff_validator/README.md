@@ -32,7 +32,7 @@ Rueda, M, Ariosa R. "Beacon v2 Reference Implementation: a software for federate
 
 bff-validator: A script that validates metadata (XLSX|JSON) against Beacon v2 Models and serializes it to BFF (JSON)
 
-# HOW TO RUN BEACON\_METADATA\_VALIDATOR
+# HOW TO RUN BFF-VALIDATOR
 
 The script runs on command-line Linux (tested on Debian-based distribution). Perl 5 is installed by default on Linux, 
 but you might need to manually install a few CPAN modules.
