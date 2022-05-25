@@ -88,7 +88,9 @@ For the most part, we sticked to Perl core modules. However, we ended up using a
     * Term::ANSIColor        # To provide colors to STDOUT
     * YAML::XS               # To deal with YAML files
 
-_NB_: At this stage we deliberately avoided containerization (e.g., Docker). However, this may change if the installation becomes messier in the future.
+_NB_: Yet stable, the software will be considered **unreleased** until the accompanying paper is published.
+
+We'll be releasing a _containerized_ version soon. Below you can find how to perform a _standard_ installation.
 
 For simplicity, we're going to install the modules (they're harmless) with sudo privileges.
 
@@ -431,6 +433,7 @@ Credits:
     * Later Dietmar Fernandez-Orth (DFO) modified the Ruby for Beacon v2 L<https://github.com/ktym/vcftobeacon and added post-processing with R, from which I borrowed ideas to implement vcf2bff.pl.
     * DFO for usability suggestions and for creating bcftools/snpEff commands.
     * Roberto Ariosa for help with MongoDB implementation.
+    * Mauricio Moldes helped with the containerization.
 
 # REPORTING BUGS
 
