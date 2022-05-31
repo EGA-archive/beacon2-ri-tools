@@ -114,8 +114,7 @@ sub vcf2bff {
     my $script_log_path = catfile( $dir, $script_log );
 
     # Create script
-    path($script_path)->spew($file_content);
-    chmod 0755, $script_path;
+    write_file($script_path, \$file_content);
 
     # Script submission
     my $input_abs = abs_path($input);    # Mandatory to be abs_path
@@ -170,8 +169,7 @@ sub bff2html {
     my $script_log_path = catfile( $dir, $script_log );
 
     # Create script
-    path($script_path)->spew($file_content);
-    chmod 0755, $script_path;
+    write_file($script_path, \$file_content);
 
     # Script submission
     my $input_abs = abs_path($input);    # Mandatory to be abs_path
@@ -264,8 +262,7 @@ sub bff2mongodb {
     my $script_log_path = catfile( $dir, $script_log );
 
     # Create script
-    path($script_path)->spew($file_content);
-    chmod 0755, $script_path;
+    write_file($script_path, \$file_content);
 
     # Script submission
     my $cmd = "cd $dir; bash $script > $script_log 2>&1";
@@ -320,6 +317,13 @@ sub submit_cmd {
     my $msg = "Failed to execute: $job\nPlease check this file $log";
     system("$cmd") == 0 or ( $debug ? confess($msg) : croak($msg) );
     return 1;
+}
+
+sub write_file {
+  
+    my ($file, $content) = @_;
+    path($file)->spew($$content);
+    chmod 0755, $file;
 }
 
 sub check_mongoimport {
