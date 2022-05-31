@@ -115,6 +115,7 @@ sub vcf2bff {
 
     # Create script
     path($script_path)->spew($file_content);
+    chmod 0755, $script_path;
 
     # Script submission
     my $input_abs = abs_path($input);    # Mandatory to be abs_path
@@ -170,6 +171,7 @@ sub bff2html {
 
     # Create script
     path($script_path)->spew($file_content);
+    chmod 0755, $script_path;
 
     # Script submission
     my $input_abs = abs_path($input);    # Mandatory to be abs_path
@@ -263,6 +265,7 @@ sub bff2mongodb {
 
     # Create script
     path($script_path)->spew($file_content);
+    chmod 0755, $script_path;
 
     # Script submission
     my $cmd = "cd $dir; bash $script > $script_log 2>&1";
