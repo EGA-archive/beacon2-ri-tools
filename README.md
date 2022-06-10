@@ -1,6 +1,6 @@
 # NAME
 
-Beacon: A script to transform **genomic variant data** (VCF) and **metadata** (including phenoclinic data) to queryable data (MongoDB)
+Beacon: A script to transform **genomic variant data** (VCF) and **metadata** (including phenotypic data) to queryable data (MongoDB)
 
 # SYNOPSIS
 
@@ -34,7 +34,7 @@ beacon &lt;mode> \[-arguments\] \[-options\]
 
 # DESCRIPTION
 
-Beacon is a script to transform **genomic variant data** (VCF) and **metadata** (including phenoclinic data) to queryable data (MongoDB).
+Beacon is a script to transform **genomic variant data** (VCF) and **metadata** (including phenotypic data) to queryable data (MongoDB).
 
 This script is part of the ELIXIR-CRG Beacon v2 Reference Implementation (B2RI).  
 
@@ -42,7 +42,7 @@ This script is part of the ELIXIR-CRG Beacon v2 Reference Implementation (B2RI).
 
                    ___________
                    |          |
-             XLSX  | Metadata | (incl. Phenoclinic data)
+             XLSX  | Metadata | (incl. Phenotypic data)
                    |__________|
                         |     
                         |
@@ -81,13 +81,6 @@ Beacon is a Perl script (no compilation needed) that runs on Linux command-line.
 
 For the most part, we sticked to Perl core modules. However, we ended up using a few CPAN modules:
 
-    * Data::Structure::Util  # Miscellanea utils for data structures  
-    * JSON:XS                # To deal with JSON files
-    * Path::Tiny             # For I/O
-    * PerlIO::gzip           # For gzip operations
-    * Term::ANSIColor        # To provide colors to STDOUT
-    * YAML::XS               # To deal with YAML files
-
 _NB_: Yet stable, the software will be considered **unreleased** until the accompanying paper is published.
 
 We'll be releasing a _containerized_ version soon. Below you can find how to perform a _standard_ installation.
@@ -102,11 +95,19 @@ First we install `cpmanminus` utility:
 
 Second we use `cpanm` to install the CPAN modules:
 
-    $ cpanm --sudo Term::ANSIColor JSON::XS YAML::XS Path::Tiny PerlIO::gzip Data::Structure::Util
+    $ cpanm --sudo --installdeps .
 
 Also, to read the documentation you'll need `perldoc` that may or may not be installed in your Linux distribution:
 
     $ sudo apt-get install perl-doc
+
+If you prefer to have the dependencies in a "virtual environment" you can use `Carton`.
+
+    $ cpanm --sudo Carton
+
+Then, we can install our dependencies:
+
+    $ carton install
 
 Beacon also needs that **bcftools**, **SnpEff** and **MongoDB** are installed. See [External Tools](https://b2ri-documentation.readthedocs.io/en/latest/external-tools/) for more info.
 
@@ -358,6 +359,8 @@ Please find below a detailed description of all parameters (alphabetical order):
 
     $ parallel "./beacon vcf -n 1 -i chr{}.vcf.gz  > chr{}.log 2>&1" ::: {1..22} X Y
 
+    $ carton exec -- ./beacon vcf -i input.vcf.gz # If using Carton 
+
 _NB_: Use this command to parse ANSI colors from the log file.
 
     $ perl -pe 's/\x1b\[[0-9;]*[mG]//g'
@@ -420,7 +423,7 @@ I am not using any CPAN's module to perform unit tests. When I modify the code m
 
 The author requests that any published work which utilizes Beacon includes a cite to the the following reference:
 
-Rueda, M, Ariosa R. "Beacon v2 Reference Implementation: a software for federated discovery of genomic and phenoclinic data". _Submitted_. 
+Rueda, M, Ariosa R. "Beacon v2 Reference Implementation: a software for federated discovery of genomic and phenotypic data". _Submitted_. 
 
 # AUTHOR
 
