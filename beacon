@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 #
-#   Script that converts genomic variants and metadta into Beacon v2
+#   Script that converts genomic variants and metadata to Beacon v2 Models
 #
 #   Last Modified: May/09/2022
 #
