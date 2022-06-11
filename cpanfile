@@ -11,7 +11,7 @@ requires 'Data::Structure::Util';   # Miscellanea utils for data structures
 # Additional modules for <Beacon2/utils>
 requires 'Mojolicious';             # bff-api
 requires 'MongoDB';                 # bff-api
-requires 'Minion';                  # bff-queur
+requires 'Minion';                  # bff-queue
 requires 'Minion::Backend::SQLite'; # bff-queue
 requires 'File::Which';             # bff-validator
 requires 'JSON::Validator';         # bff-validator
