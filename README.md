@@ -101,7 +101,7 @@ Also, to read the documentation you'll need `perldoc` that may or may not be ins
 
     $ sudo apt-get install perl-doc
 
-If you prefer to have the dependencies in a "virtual environment" you can use `Carton`.
+If you prefer to have the dependencies in a "virtual environment" (i.e., install the CPAN modules in the directory of the application) we recommend using the module `Carton`.
 
     $ cpanm --sudo Carton
 
