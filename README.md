@@ -79,7 +79,7 @@ Download the latest version from [Github](https://github.com/mrueda/Beacon2):
 
 Beacon is a Perl script (no compilation needed) that runs on Linux command-line. Internally, it submits multiple pipelines via customizable Bash scripts (see example [here](https://github.com/mrueda/Beacon2/blob/main/BEACON/bin/run_vcf2bff.sh)). Note that Perl and Bash are installed by default in Linux.
 
-For the most part, we sticked to Perl core modules. However, we ended up using a few CPAN modules:
+Perl 5 is installed by default on Linux, but we will need to install a few CPAN modules.
 
 _NB_: Yet stable, the software will be considered **unreleased** until the accompanying paper is published.
 

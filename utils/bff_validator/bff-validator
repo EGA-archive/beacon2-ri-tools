@@ -736,24 +736,23 @@ bff-validator: A script that validates metadata (XLSX|JSON) against Beacon v2 Mo
 =head1 HOW TO RUN BFF-VALIDATOR
 
 The script runs on command-line Linux (tested on Debian-based distribution). Perl 5 is installed by default on Linux, 
-but you might need to manually install a few CPAN modules.
-
-    * File::Which
-    * JSON::XS
-    * JSON::Validator
-    * List::MoreUtils
-    * Path::Tiny
-    * Term::ANSIColor
-    * Text::CSV_XS
-    * Text::Unidecode
+but we will need to install a few CPAN modules.
 
 First we install cpanminus (with sudo privileges):
 
    $ sudo apt-get install cpanminus
 
-Then the modules:
+Second we use cpanm to install the CPAN modules:
 
-   $ cpanm --sudo File::Which JSON::XS JSON::Validator List::MoreUtils Term::ANSIColor Text::CSV_XS Path::Tiny Text::Unidecode
+   $ cpanm --sudo --installdeps .
+
+If you prefer to have the dependencies in a "virtual environment" (i.e., install the CPAN modules in the directory of the application) we recommend using the module Carton.
+
+   $ cpanm --sudo Carton
+
+Then, we can install our dependencies:
+
+   $ carton install
 
 Also, we're using I<xlsx2csv>, which is a python script. 
 
@@ -795,6 +794,9 @@ B<Examples:>
    $ $path/bff-validator -i my_bff_indir/*json -s deref_schemas -o my_bff_outdir 
 
    $ $path/bff-validator -i file.xlsx --gv --schema-dir deref_schemas --out-dir my_bff_outdir
+  
+   $ carton exec -- ./bff-validator -i file.xlsx # If using Carton
+
 
 =head2 TIPS ON FILLING OUT THE EXCEL TEMPLATE
 
