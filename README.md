@@ -109,7 +109,7 @@ Then, we can install our dependencies:
 
     $ carton install
 
-Beacon also needs that **bcftools**, **SnpEff** and **MongoDB** are installed. See [External Tools](https://b2ri-documentation.readthedocs.io/en/latest/external-tools/) for more info.
+Beacon also needs that **bcftools**, **SnpEff** and **MongoDB** are installed. See [external software](https://b2ri-documentation.readthedocs.io/en/latest/d-and-i/#method-1-non-containerized-version/) for more info.
 
 ## SYSTEM REQUIREMENTS
 
@@ -118,7 +118,7 @@ Beacon also needs that **bcftools**, **SnpEff** and **MongoDB** are installed. S
     * 4GB of RAM (ideally 16GB).
     * >= 1 cores (ideally i7 or Xeon).
     * At least 200GB HDD.
-    * bcftools, SnpEff and MongoDB (see https://b2ri-documentation.readthedocs.io/en/latest/external-tools)
+    * bcftools, SnpEff and MongoDB
 
 The Perl itself does not need a lot of RAM (max load will reach 400MB) but external tools do (e.g., process `mongod` \[MongoDB's daemon\]).
 
