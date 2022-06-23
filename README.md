@@ -423,7 +423,7 @@ I am not using any CPAN's module to perform unit tests. When I modify the code m
 
 The author requests that any published work which utilizes Beacon includes a cite to the the following reference:
 
-Rueda, M, Ariosa R. "Beacon v2 Reference Implementation: a software for federated discovery of genomic and phenotypic data". _Submitted_. 
+Rueda, M, Ariosa R. "Beacon v2 Reference Implementation: a toolkit to enable federated sharing of genomic and phenotypic data". _Submitted_. 
 
 # AUTHOR
 

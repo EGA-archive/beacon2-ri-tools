@@ -69,7 +69,7 @@ In another terminal, we'll start the UI with:
 
 Yes, the UI is **phenomenal**.
 
-Alternative (in production), you can run the UI by using:
+Alternatively (in production), you can run the UI by using:
 
     $ hypnotoad minion_ui.pl # You will able to access it at http://localhost:8080
 
