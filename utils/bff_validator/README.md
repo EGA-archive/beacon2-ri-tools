@@ -69,7 +69,7 @@ For executing bff-validator you will need:
 
     Please use the flag `--gv` should you want to validate the data in the sheet &lt;genomicVariations>.
 
-    _NB:_ If you have multiple CSV files instead of a XLSX file you can use the included utility [csv2xlsx](https://github.com/mrueda/Beacon2/blob/main/utils/models2xlsx/csv2xlsx) that will join all CSVs into 1 XLSX.
+    _NB:_ If you have multiple CSV files instead of a XLSX file you can use the included utility [csv2xlsx](https://github.com/mrueda/beacon2-tools/blob/main/utils/models2xlsx/csv2xlsx) that will join all CSVs into 1 XLSX.
 
         $ ./csv2xlsx *csv -o out.xlsx
 

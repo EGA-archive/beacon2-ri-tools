@@ -293,17 +293,21 @@ The purpose of such HTML file is to provide a preliminary exploration of the gen
 
 =head1 INSTALLATION
 
-Download the latest version from L<Github|https://github.com/mrueda/Beacon2>:
+We provide two installation options, one L<containerized|https://hub.docker.com/r/mmoldes/beacon_reference_implementation> and the one you're about to see (non-containerized).
+
+Download the latest version from L<Github|https://github.com/mrueda/beacon2-tools>:
 
   $ tar -xvf beacon_2.0.0.tar.gz    # Note that naming may be different
 
-Beacon is a Perl script (no compilation needed) that runs on Linux command-line. Internally, it submits multiple pipelines via customizable Bash scripts (see example L<here|https://github.com/mrueda/Beacon2/blob/main/BEACON/bin/run_vcf2bff.sh>). Note that Perl and Bash are installed by default in Linux.
+Alternatively, you can use git clone to get the latest (stable) version
+
+  $ git clone https://github.com/mrueda/beacon2-tools.git
+
+Beacon is a Perl script (no compilation needed) that runs on Linux command-line. Internally, it submits multiple pipelines via customizable Bash scripts (see example L<here|https://github.com/mrueda/beacon2-tools/blob/main/BEACON/bin/run_vcf2bff.sh>). Note that Perl and Bash are installed by default in Linux.
 
 Perl 5 is installed by default on Linux, but we will need to install a few CPAN modules.
 
-I<NB>: Yet stable, the software will be considered B<unreleased> until the accompanying paper is published.
-
-We'll be releasing a I<containerized> version soon. Below you can find how to perform a I<standard> installation.
+I<NB>: Yet stable, the software will be considered B<unreleased> until the accompanying paper is B<ACCEPTED>.
 
 For simplicity, we're going to install the modules (they're harmless) with sudo privileges.
 
@@ -499,7 +503,7 @@ A parameters text file that will contain specific values needed for the job.
 
 =item * (Optional) Specify the number of cores (only for VCF processing!)
 
-The number of threads/cores you want to use for the job. In this regard (since SnpEff does not deal well with parallelization) we recommend using C<-n 1> and running multiple simultaneous jobs with GNU C<parallel> or the included L<queue system|https://github.com/mrueda/Beacon2/tree/main/utils/bff_queue>). The software scales linearly {O}(n) with the number of variants present in the input file. The easiest way is to run one job per chromosome, but if you are in a hurry and have many cores you can split each chromosome into smaller vcfs.
+The number of threads/cores you want to use for the job. In this regard (since SnpEff does not deal well with parallelization) we recommend using C<-n 1> and running multiple simultaneous jobs with GNU C<parallel> or the included L<queue system|https://github.com/mrueda/beacon2-tools/tree/main/utils/bff_queue>). The software scales linearly {O}(n) with the number of variants present in the input file. The easiest way is to run one job per chromosome, but if you are in a hurry and have many cores you can split each chromosome into smaller vcfs.
 
 =back
 
@@ -605,13 +609,13 @@ Beacon Friendly Format is a set of 7 JSON files (JSON arrays consisting of multi
 
 Six files correspond to Metadata (C<analyses.json,biosamples.json,cohorts.json,datasets.json,individuals.json,runs.json>) and one corresponds to variants (C<genomicVariations.json>).
 
-Normally, C<beacon> script is used to create C<genomicVariations> JSON file. The other 6 files are created with L<this utility|https://github.com/mrueda/Beacon2/tree/main/utils/bff_validator> (part of the distribution). See intructions L<here|https://github.com/mrueda/Beacon2/tree/main/utils/bff_validator/README.md>.
+Normally, C<beacon> script is used to create C<genomicVariations> JSON file. The other 6 files are created with L<this utility|https://github.com/mrueda/beacon2-tools/tree/main/utils/bff_validator> (part of the distribution). See intructions L<here|https://github.com/mrueda/beacon2-tools/tree/main/utils/bff_validator/README.md>.
 
 Once we have all seven files, then we can proceed to load the data into MongoDB.
 
 =head1 TESTING THE CODE
 
-I am not using any CPAN's module to perform unit tests. When I modify the code my "integration tests" are done by comparing to reference files. You can validate the installation using the files included in the L<test|https://github.com/mrueda/Beacon2/tree/main/test> directory.
+I am not using any CPAN's module to perform unit tests. When I modify the code my "integration tests" are done by comparing to reference files. You can validate the installation using the files included in the L<test|https://github.com/mrueda/beacon2-tools/tree/main/test> directory.
 
 
 =head1 COMMON ERRORS: SYMPTOMS AND TREATMENT

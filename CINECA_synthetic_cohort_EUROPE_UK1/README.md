@@ -9,7 +9,7 @@ The dataset consists of 2504 samples which have genetic data (low coverage WGS) 
 
 The dataset `EGAD00001006673` was downloaded from the EGA, please see the full description [here](https://ega-archive.org/datasets/EGAD00001006673). Please contact `helpdesk@ega-archive.org` should you want get access to the whole dataset.
 
-A [raw file](./uk1.tsv) with phenoclinic was gently donated to us from our CINECA-EU partners. 
+A [raw file](./uk1.tsv) with phenoclinic data was gently donated to us from our CINECA-EU partners. 
 
  
 ### Notes about column mapping
@@ -24,7 +24,7 @@ A [raw file](./uk1.tsv) with phenoclinic was gently donated to us from our CINEC
 * `bff/*json` - Collections (JSON arrays) created from the Excel file (OUTPUT).
 * `scripts/` - Directory with miscellanea (ad hoc) scripts used by the author to transform `uk1.tsv` to multiple `csv` (used to fill out `Beacon-v2-Models_CINECA_UK1.xlsx`) .
 
-### External files
+### External files:
 
 [Link to Google Drive](https://drive.google.com/drive/folders/1-UqAOW_jHrpuc-fx3BnDNkI0yCUxSTuO?usp=sharing)
 * `chr22.Test.1000G.phase3.joint.vcf.gz` - VCF file consisting of WGS for chr22 (INPUT).
