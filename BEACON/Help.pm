@@ -43,14 +43,17 @@ sub usage {
     # Help if no args
     pod2usage( -exitval => 1, -verbose => 1 ) unless @ARGV;
 
+    # Parse things related to info
+    info( $version, lc( $ARGV[0] ) );
+
     # 1st arg will become 'mode'
     my %arg  = ( mode => shift(@ARGV) );
     my %func = (
-        info    => \&info,
         full    => \&vcf_and_full,
         vcf     => \&vcf_and_full,
         mongodb => \&mongodb
     );
+
     pod2usage(
         -exitval => 1,
         -verbose => 1,
@@ -58,10 +61,7 @@ sub usage {
     ) unless exists $func{ $arg{mode} };
 
     # Execute function if mode is present
-    if ( $arg{mode} eq 'info' ) {
-        $func{ $arg{mode} }->($version);
-    }
-    elsif ( $arg{mode} eq 'full' ) {
+    if ( $arg{mode} eq 'full' ) {
         $func{ $arg{mode} }->('full');
     }
     else {
@@ -70,13 +70,17 @@ sub usage {
 }
 
 sub info {
-    my $version = shift;
-    my %arg     = ();
-    GetOptions(
-        'v'      => sub { print "$version\n"; exit },
-        'h|help' => sub { pod2usage( -exitval => 0, -verbose => 1 ) },
-        'man'    => sub { pod2usage( -exitval => 0, -verbose => 2 ) }
-    ) or pod2usage( -exitval => 1, -verbose => 1 );
+    my ( $version, $arg ) = @_;
+    if ( $arg eq '-h' || $arg eq '-help' ) {
+        pod2usage( -exitval => 0, -verbose => 1 );
+    }
+    elsif ( $arg eq '-man' ) {
+        pod2usage( -exitval => 0, -verbose => 2 );
+    }
+    elsif ( $arg eq '-v' ) {
+        say "$version" and exit;
+    }
+    return 1;
 }
 
 sub vcf_and_full {

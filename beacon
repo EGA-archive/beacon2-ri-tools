@@ -225,12 +225,7 @@ Beacon: A script to transform B<genomic variant data> (VCF) and B<metadata> (inc
 
 beacon <mode> [-arguments] [-options]
 
- Mode:
-    info
-       -h|help                        Brief help message
-       -man                           Full documentation
-       -v                             Version
-
+   Mode:
      vcf 
        -i|input                       Requires a VCF.gz file
                                       (May require a parameters file)
@@ -242,7 +237,10 @@ beacon <mode> [-arguments] [-options]
        -i|input                       Requires a VCF.gz file
                                       (May require a parameters file)
 
-     Options:
+   Options:
+       -h|help                        Brief help message
+       -man                           Full documentation
+       -v                             Version
        -c                             Requires a configuration file
        -p                             Requires a parameters file
        -n                             Number of cpus/cores/threads
@@ -466,11 +464,7 @@ Use if you a have a preferred tmpdir.
 
 We recommend following this L<tutorial|https://b2ri-documentation.readthedocs.io/en/latest/tutorial-basic/>.
 
-This script has four B<modes>: C<info, vcf, mongodb> and C<full>
-
-B<* Mode C<info>>
-
-It displays information about the script.
+This script has three B<modes>: C<vcf, mongodb> and C<full>
 
 B<* Mode C<vcf>>
 

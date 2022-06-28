@@ -7,30 +7,28 @@ Beacon: A script to transform **genomic variant data** (VCF) and **metadata** (i
 beacon &lt;mode> \[-arguments\] \[-options\]
 
     Mode:
-       info
-          -h|help                        Brief help message
-          -man                           Full documentation
-          -v                             Version
+      vcf 
+        -i|input                       Requires a VCF.gz file
+                                       (May require a parameters file)
 
-        vcf 
-          -i|input                       Requires a VCF.gz file
-                                         (May require a parameters file)
+      mongodb
+                                       (May require a parameters file)
 
-        mongodb
-                                         (May require a parameters file)
+      full (vcf + mongodb)
+        -i|input                       Requires a VCF.gz file
+                                       (May require a parameters file)
 
-        full (vcf + mongodb)
-          -i|input                       Requires a VCF.gz file
-                                         (May require a parameters file)
+    Options:
+        -h|help                        Brief help message
+        -man                           Full documentation
+        -v                             Version
+        -c                             Requires a configuration file
+        -p                             Requires a parameters file
+        -n                             Number of cpus/cores/threads
+        -debug                         Print debugging (from 1 to 5, being 5 max)
+        -verbose                       Verbosity on
 
-        Options:
-          -c                             Requires a configuration file
-          -p                             Requires a parameters file
-          -n                             Number of cpus/cores/threads
-          -debug                         Print debugging (from 1 to 5, being 5 max)
-          -verbose                       Verbosity on
-
-          (For convenience, specifiers may have a leading - or --)
+        (For convenience, specifiers may have a leading - or --)
 
 # DESCRIPTION
 
@@ -242,11 +240,7 @@ Please find below a detailed description of all parameters (alphabetical order):
 
 We recommend following this [tutorial](https://b2ri-documentation.readthedocs.io/en/latest/tutorial-basic/).
 
-This script has four **modes**: `info, vcf, mongodb` and `full`
-
-**\* Mode `info`**
-
-It displays information about the script.
+This script has three **modes**: `vcf, mongodb` and `full`
 
 **\* Mode `vcf`**
 
