@@ -111,7 +111,7 @@ Then, we can install our dependencies:
 
     $ carton install
 
-Beacon also needs that **bcftools**, **SnpEff** and **MongoDB** are installed. See [external software](https://b2ri-documentation.readthedocs.io/en/latest/d-and-i/#method-1-non-containerized-version/) for more info.
+Beacon also needs that **bcftools**, **SnpEff** and **MongoDB** are installed. See [external software](https://b2ri-documentation.readthedocs.io/en/latest/download-and-installation/#method-2-non-containerized-version/) for more info.
 
 ## SYSTEM REQUIREMENTS
 
