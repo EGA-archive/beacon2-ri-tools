@@ -26,7 +26,7 @@ bff-validator -i &lt;file.xlsx|\*json> \[-options\]
 
 The author requests that any published work which utilizes Beacon includes a cite to the the following reference:
 
-Rueda, M, Ariosa R. "Beacon v2 Reference Implementation: a software for federated discovery of genomic and phenoclinic data". _Submitted_.
+Rueda, M, Ariosa R. "Beacon v2 Reference Implementation: a toolkit to enable federated discovery of genomic and phenotypic data". _Submitted_.
 
 # SUMMARY
 

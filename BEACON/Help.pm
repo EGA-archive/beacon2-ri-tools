@@ -70,6 +70,7 @@ sub usage {
 }
 
 sub info {
+
     my ( $version, $arg ) = @_;
     if ( $arg eq '-h' || $arg eq '-help' ) {
         pod2usage( -exitval => 0, -verbose => 1 );
@@ -84,6 +85,7 @@ sub info {
 }
 
 sub vcf_and_full {
+
     my $mode = shift;
     my %arg  = ( debug => 0, mode => $mode // 'vcf' );
     GetOptions(
