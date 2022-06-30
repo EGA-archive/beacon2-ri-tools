@@ -18,6 +18,7 @@ bff-validator -i &lt;file.xlsx|\*json> \[-options\]
        -man                           Full documentation
        -debug                         Print debugging (from 1 to 5, being 5 max)
        -verbose                       Verbosity on
+       -nc|-no-color                  Don't print colors to STDOUT
      
      Experimental:
        -gv-vcf                        Set this option to read <genomicVariations.json> from <beacon vcf> (with one document x line)

@@ -73,6 +73,7 @@ sub validate_input_data {
         'ignore-validation' => \my $ignore_validation,                 # flag
         'debug=i'           => \$debug,                                # integer
         'verbose'           => \$verbose,                              # flag
+        'no-color|nc'       => \my $no_color,                          # flag
         'version|v'         => sub { say "$0 Version $version"; exit; }
     ) or pod2usage(2);
     pod2usage(1)                              if $help;
@@ -89,6 +90,9 @@ sub validate_input_data {
         -message => "Please specify a valid directory for --out-dir\n",
         -exitval => 1
     ) if ( !-d $out_dir );
+
+    # Turning color off if argument <--no-color>
+    $ENV{'ANSI_COLORS_DISABLED'} = 1 if $no_color;
 
     # Define a few more variables
     my @schemas =
@@ -719,6 +723,7 @@ bff-validator -i <file.xlsx|*json> [-options]
        -man                           Full documentation
        -debug                         Print debugging (from 1 to 5, being 5 max)
        -verbose                       Verbosity on
+       -nc|-no-color                  Don't print colors to STDOUT
      
      Experimental:
        -gv-vcf                        Set this option to read <genomicVariations.json> from <beacon vcf> (with one document x line)
@@ -727,7 +732,7 @@ bff-validator -i <file.xlsx|*json> [-options]
 
 The author requests that any published work which utilizes Beacon includes a cite to the the following reference:
 
-Rueda, M, Ariosa R. "Beacon v2 Reference Implementation: a software for federated discovery of genomic and phenoclinic data". I<Submitted>.
+Rueda, M, Ariosa R. "Beacon v2 Reference Implementation: a toolkit to enable federated discovery of genomic and phenotypic data". I<Submitted>.
 
 =head1 SUMMARY
 

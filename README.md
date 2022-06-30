@@ -27,6 +27,7 @@ beacon &lt;mode> \[-arguments\] \[-options\]
         -n                             Number of cpus/cores/threads
         -debug                         Print debugging (from 1 to 5, being 5 max)
         -verbose                       Verbosity on
+        -nc|-no-color                  Don't print colors to STDOUT
 
         (For convenience, specifiers may have a leading - or --)
 
@@ -359,7 +360,7 @@ Please find below a detailed description of all parameters (alphabetical order):
 
     $ carton exec -- ./beacon vcf -i input.vcf.gz # If using Carton 
 
-_NB_: Use this command to parse ANSI colors from the log file.
+_NB_: If you don't want colors in the output use the flag `--no-color`. Use this command to parse ANSI colors from the log file.
 
     $ perl -pe 's/\x1b\[[0-9;]*[mG]//g'
 

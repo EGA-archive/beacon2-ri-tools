@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use feature qw(say);
 use Pod::Usage;
-use Getopt::Long;
+use Getopt::Long qw(:config posix_default);
 use Data::Dumper;
 
 =head1 NAME
@@ -89,12 +89,13 @@ sub vcf_and_full {
     my $mode = shift;
     my %arg  = ( debug => 0, mode => $mode // 'vcf' );
     GetOptions(
-        'debug=i'    => \$arg{debug},         # numeric (integer)
-        'verbose'    => \$arg{verbose},       # flag
-        'n=i'        => \$arg{ncpu},          # numeric (integer)
-        'p|param=s'  => \$arg{paramfile},     # string
-        'c|config=s' => \$arg{configfile},    # string
-        'i|input=s'  => \$arg{inputfile}      # string
+        'debug=i'     => \$arg{debug},         # numeric (integer)
+        'verbose'     => \$arg{verbose},       # flag
+        'nc|no-color' => \$arg{nocolor},       # flag
+        'n=i'         => \$arg{ncpu},          # numeric (integer)
+        'p|param=s'   => \$arg{paramfile},     # string
+        'c|config=s'  => \$arg{configfile},    # string
+        'i|input=s'   => \$arg{inputfile}      # string
     ) or pod2usage( -exitval => 1, -verbose => 1 );
     pod2usage(
         -exitval => 1,
@@ -111,11 +112,12 @@ sub mongodb {
 
     my %arg = ( debug => 0, mode => 'mongodb' );
     GetOptions(
-        'debug=i'    => \$arg{debug},        # numeric (integer)
-        'verbose'    => \$arg{verbose},      # flag
-        'n=i'        => \$arg{ncpu},         # numeric (integer)
-        'p|param=s'  => \$arg{paramfile},    # string
-        'c|config=s' => \$arg{configfile}    # string
+        'debug=i'     => \$arg{debug},        # numeric (integer)
+        'verbose'     => \$arg{verbose},      # flag
+        'nc|no-color' => \$arg{nocolor},      # flag
+        'n=i'         => \$arg{ncpu},         # numeric (integer)
+        'p|param=s'   => \$arg{paramfile},    # string
+        'c|config=s'  => \$arg{configfile}    # string
 
     ) or pod2usage( -exitval => 1, -verbose => 1 );
     usage_params( \%arg );
