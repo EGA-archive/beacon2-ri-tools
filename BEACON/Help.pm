@@ -91,11 +91,11 @@ sub vcf_and_full {
     GetOptions(
         'debug=i'     => \$arg{debug},         # numeric (integer)
         'verbose'     => \$arg{verbose},       # flag
-        'nc|no-color' => \$arg{nocolor},       # flag
+        'no-color|nc' => \$arg{nocolor},       # flag
         'n=i'         => \$arg{ncpu},          # numeric (integer)
-        'p|param=s'   => \$arg{paramfile},     # string
-        'c|config=s'  => \$arg{configfile},    # string
-        'i|input=s'   => \$arg{inputfile}      # string
+        'param|p=s'   => \$arg{paramfile},     # string
+        'config|c=s'  => \$arg{configfile},    # string
+        'input|i=s'   => \$arg{inputfile}      # string
     ) or pod2usage( -exitval => 1, -verbose => 1 );
     pod2usage(
         -exitval => 1,
@@ -114,10 +114,10 @@ sub mongodb {
     GetOptions(
         'debug=i'     => \$arg{debug},        # numeric (integer)
         'verbose'     => \$arg{verbose},      # flag
-        'nc|no-color' => \$arg{nocolor},      # flag
+        'no-color|nc' => \$arg{nocolor},      # flag
         'n=i'         => \$arg{ncpu},         # numeric (integer)
-        'p|param=s'   => \$arg{paramfile},    # string
-        'c|config=s'  => \$arg{configfile}    # string
+        'param|p=s'   => \$arg{paramfile},    # string
+        'config|c=s'  => \$arg{configfile}    # string
 
     ) or pod2usage( -exitval => 1, -verbose => 1 );
     usage_params( \%arg );
