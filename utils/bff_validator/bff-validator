@@ -777,7 +777,7 @@ Currently, the file consists of 7 sheets that match the Beacon v2 Models.
 
 Please use the flag C<--gv> should you want to validate the data in the sheet <genomicVariations>.
 
-I<NB:> If you have multiple CSV files instead of a XLSX file you can use the included utility L<csv2xlsx|https://github.com/mrueda/beacon2-tools/blob/main/utils/models2xlsx/csv2xlsx> that will join all CSVs into 1 XLSX.
+I<NB:> If you have multiple CSV files instead of a XLSX file you can use the included utility L<csv2xlsx|https://github.com/EGA-archive/beacon2-ri-tools/blob/main/utils/models2xlsx/csv2xlsx> that will join all CSVs into 1 XLSX.
 
    $ ./csv2xlsx *csv -o out.xlsx
 

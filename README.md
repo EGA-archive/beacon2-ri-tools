@@ -74,15 +74,15 @@ The purpose of such HTML file is to provide a preliminary exploration of the gen
 
 We provide two installation options, one [containerized](https://hub.docker.com/r/mmoldes/beacon_reference_implementation) and the one you're about to see (non-containerized).
 
-Download the latest version from [Github](https://github.com/mrueda/beacon2-tools):
+Download the latest version from [Github](https://github.com/EGA-archive/beacon2-ri-tools):
 
     $ tar -xvf beacon_2.0.0.tar.gz    # Note that naming may be different
 
 Alternatively, you can use git clone to get the latest (stable) version
 
-    $ git clone https://github.com/mrueda/beacon2-tools.git
+    $ git clone https://github.com/EGA-archive/beacon2-ri-tools.git
 
-Beacon is a Perl script (no compilation needed) that runs on Linux command-line. Internally, it submits multiple pipelines via customizable Bash scripts (see example [here](https://github.com/mrueda/beacon2-tools/blob/main/BEACON/bin/run_vcf2bff.sh)). Note that Perl and Bash are installed by default in Linux.
+Beacon is a Perl script (no compilation needed) that runs on Linux command-line. Internally, it submits multiple pipelines via customizable Bash scripts (see example [here](https://github.com/EGA-archive/beacon2-ri-tools/blob/main/BEACON/bin/run_vcf2bff.sh)). Note that Perl and Bash are installed by default in Linux.
 
 Perl 5 is installed by default on Linux, but we will need to install a few CPAN modules.
 
@@ -271,7 +271,7 @@ To perform all these taks you'll need:
 
 - (Optional) Specify the number of cores (only for VCF processing!)
 
-    The number of threads/cores you want to use for the job. In this regard (since SnpEff does not deal well with parallelization) we recommend using `-n 1` and running multiple simultaneous jobs with GNU `parallel` or the included [queue system](https://github.com/mrueda/beacon2-tools/tree/main/utils/bff_queue)). The software scales linearly {O}(n) with the number of variants present in the input file. The easiest way is to run one job per chromosome, but if you are in a hurry and have many cores you can split each chromosome into smaller vcfs.
+    The number of threads/cores you want to use for the job. In this regard (since SnpEff does not deal well with parallelization) we recommend using `-n 1` and running multiple simultaneous jobs with GNU `parallel` or the included [queue system](https://github.com/EGA-archive/beacon2-ri-tools/tree/main/utils/bff_queue)). The software scales linearly {O}(n) with the number of variants present in the input file. The easiest way is to run one job per chromosome, but if you are in a hurry and have many cores you can split each chromosome into smaller vcfs.
 
 Beacon will create an independent project directory `projectdir` and store all needed information needed there. Thus, many concurrent calculations are supported.
 Note that `beacon` will treat your data as _read-only_ (i.e., will not modify your original files).
@@ -370,13 +370,13 @@ Beacon Friendly Format is a set of 7 JSON files (JSON arrays consisting of multi
 
 Six files correspond to Metadata (`analyses.json,biosamples.json,cohorts.json,datasets.json,individuals.json,runs.json`) and one corresponds to variants (`genomicVariations.json`).
 
-Normally, `beacon` script is used to create `genomicVariations` JSON file. The other 6 files are created with [this utility](https://github.com/mrueda/beacon2-tools/tree/main/utils/bff_validator) (part of the distribution). See intructions [here](https://github.com/mrueda/beacon2-tools/tree/main/utils/bff_validator/README.md).
+Normally, `beacon` script is used to create `genomicVariations` JSON file. The other 6 files are created with [this utility](https://github.com/EGA-archive/beacon2-ri-tools/tree/main/utils/bff_validator) (part of the distribution). See intructions [here](https://github.com/EGA-archive/beacon2-ri-tools/tree/main/utils/bff_validator/README.md).
 
 Once we have all seven files, then we can proceed to load the data into MongoDB.
 
 # TESTING THE CODE
 
-I am not using any CPAN's module to perform unit tests. When I modify the code my "integration tests" are done by comparing to reference files. You can validate the installation using the files included in the [test](https://github.com/mrueda/beacon2-tools/tree/main/test) directory.
+I am not using any CPAN's module to perform unit tests. When I modify the code my "integration tests" are done by comparing to reference files. You can validate the installation using the files included in the [test](https://github.com/EGA-archive/beacon2-ri-tools/tree/main/test) directory.
 
 # COMMON ERRORS: SYMPTOMS AND TREATMENT
 

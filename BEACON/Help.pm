@@ -104,6 +104,9 @@ sub vcf_and_full {
     ) unless ( $arg{inputfile} );
     usage_params( \%arg );
 
+    # Turning color off if argument <--no-color>
+    $ENV{'ANSI_COLORS_DISABLED'} = 1 if $arg{nocolor};
+
     #print Dumper \%arg;
     return wantarray ? %arg : \%arg;
 }
@@ -121,6 +124,9 @@ sub mongodb {
 
     ) or pod2usage( -exitval => 1, -verbose => 1 );
     usage_params( \%arg );
+
+    # Turning color off if argument <--no-color>
+    $ENV{'ANSI_COLORS_DISABLED'} = 1 if $arg{nocolor};
 
     #print Dumper \%arg;
     return wantarray ? %arg : \%arg;
