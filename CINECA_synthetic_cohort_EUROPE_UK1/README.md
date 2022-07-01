@@ -26,6 +26,6 @@ A [raw file](./uk1.tsv) with phenoclinic data was gently donated to us from our 
 
 ### External files:
 
-[Link to Google Drive](https://drive.google.com/drive/folders/1-UqAOW_jHrpuc-fx3BnDNkI0yCUxSTuO?usp=sharing)
+[Link to CRG public ftp site](ftp://xfer13.crg.eu:221/external_files/CINECA_synthetic_cohort_EUROPE_UK1)
 * `chr22.Test.1000G.phase3.joint.vcf.gz` - VCF file consisting of WGS for chr22 (INPUT).
 * `genomicVariationsVcf.json.gz` - Collection for genomic variations (OUTPUT).
