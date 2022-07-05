@@ -756,6 +756,7 @@ sub mapping2beacon {
     # ======== *****************************************************************
     # position * WARNING!!!! DEPRECATED - USING VRS-location SINCE APR-2022 !!!*
     # ======== *****************************************************************
+
     my $position_str = '_position';
 
     $genomic_variations->{$position_str}{assemblyId} =
