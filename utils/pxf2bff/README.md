@@ -21,7 +21,7 @@ pxf2bff -i <\*.json> \[-options\]
 
 The author requests that any published work which utilizes Beacon includes a cite to the the following reference:
 
-Rueda, M, Ariosa R. "Beacon v2 Reference Implementation: a software for federated discovery of genomic and phenoclinic data". _Submitted_.
+Rueda, M, Ariosa R. "Beacon v2 Reference Implementation: a toolkit to enable federated discovery of genomic and phenotypic data". _Submitted_.
 
 # SUMMARY
 
@@ -29,26 +29,34 @@ A script that converts Phenopacket PXF (JSON) to BFF (JSON).
 
 Note that PXF contain one individual per file (1 JSON document), whereas BFF (majoritarily) contain multiple inviduals per file (JSON array of documentsa). Thus, the input should be PXF JSON from, say, the same dataset, and the output will be a unique `individuals.json` file.
 
-_NB:_ The script was created to parse [RD\_Connect synthetic data](https://ega-archive.org/datasets/EGAD00001008392). See examples in the `in` and `out` directories. The script is **UNTESTED** for other PXFs.
+_NB:_ The script was created to parse [RD\_Connect synthetic data](https://ega-archive.org/datasets/EGAD00001008392). See examples in the `in` and `out` directories. 
+
+The script is **UNTESTED** for other PXFs. Please use at your own risk!
+
+**UPDATE**: The author is working in an improved version in the form of a CPAN module. Please take a look [here](https://github.com/mrueda/Convert-Pheno).
 
 # HOW TO RUN PXF2BFF
 
-The script runs on command-line Linux (tested on Debian-based distribution). Perl 5 is installed by default on Linux, 
-but you might need to manually install a few CPAN modules.
-
-    * JSON::XS
-    * Path::Tiny
-    * Term::ANSIColor
+The script runs on command-line Linux (tested on Debian-based distribution). Perl 5 is installed by default on Linux,
+but we will need to install a few CPAN modules.
 
 First we install cpanminus (with sudo privileges):
 
     $ sudo apt-get install cpanminus
 
-Then the modules:
+Second we use cpanm to install the CPAN modules:
 
-    $ cpanm --sudo JSON::XS Path::Tiny Term::ANSIColor
+    $ cpanm --sudo --installdeps .
 
-For executing pxf2bff you will need:
+If you prefer to have the dependencies in a "virtual environment" (i.e., install the CPAN modules in the directory of the application) we recommend using the module Carton.
+
+    $ cpanm --sudo Carton
+
+Then, we can install our dependencies:
+
+    $ carton install
+
+For executing `pxf2bff` you will need:
 
 - Input file(s):
 
@@ -61,6 +69,8 @@ For executing pxf2bff you will need:
     $ $path/pxf2bff -i file.json --out-dir my_bff_outdir
 
     $ $path/pxf2bff -i my_indir/*json -o my_bff_outdir 
+
+    $ carton exec -- $path/pxf2bff -i my_indir/*json -o my_bff_outdir # if using Carton
 
 ## COMMON ERRORS AND SOLUTIONS
 

@@ -763,7 +763,7 @@ Also, we're using I<xlsx2csv>, which is a python script.
 
    $ sudo pip install xlsx2csv
 
-For executing bff-validator you will need:
+For executing C<bff-validator> you will need:
 
 =over
 
