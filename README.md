@@ -239,7 +239,7 @@ Please find below a detailed description of all parameters (alphabetical order):
 
 # HOW TO RUN BEACON
 
-We recommend following this [tutorial](https://b2ri-documentation.readthedocs.io/en/latest/tutorial-basic/).
+We recommend following this [tutorial](https://b2ri-documentation.readthedocs.io/en/latest/tutorial-data-beaconization/).
 
 This script has three **modes**: `vcf, mongodb` and `full`
 
