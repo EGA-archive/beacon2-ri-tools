@@ -96,7 +96,7 @@ First we install `cpmanminus` utility:
 
     $ sudo apt-get install cpanminus
 
-Second we use `cpanm` to install the CPAN modules:
+Second we use `cpanm` to install the CPAN modules. Change directory into the `beacon2-ri-tools` folder and run:
 
     $ cpanm --sudo --installdeps .
 
@@ -239,7 +239,7 @@ Please find below a detailed description of all parameters (alphabetical order):
 
 # HOW TO RUN BEACON
 
-We recommend following this [tutorial](https://b2ri-documentation.readthedocs.io/en/latest/tutorial-basic/).
+We recommend following this [tutorial](https://b2ri-documentation.readthedocs.io/en/latest/tutorial-data-beaconization/).
 
 This script has three **modes**: `vcf, mongodb` and `full`
 
