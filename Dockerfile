@@ -27,9 +27,3 @@ WORKDIR /usr/share/beacon-ri/beacon2-ri-tools
 RUN cpanm --sudo --installdeps .
 
 WORKDIR /usr/share/beacon-ri/
-
-##########################
-## Pull external applications
-##########################
-
-RUN ["chmod", "+x", "/usr/share/beacon-ri/BEACON/bin/deploy_external_tools.sh"]
