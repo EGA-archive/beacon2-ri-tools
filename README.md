@@ -85,7 +85,7 @@ Download the `Dockerfile` from [Github](https://github.com/EGA-archive/beacon2-r
 
 After the last command, you will arrive in `/usr/share/beacon-ri/`, then execute:
 
-    $ bash beacon2-ri-tools/BEACON/bin/dexploy_external_tools.sh
+    $ bash beacon2-ri-tools/BEACON/bin/deploy_external_tools.sh
 
 that will inject the external tools and DBs into the image and modify the configs. It will also run a test. Note that it will take some time (and disk space!!!).
 
