@@ -72,7 +72,24 @@ The purpose of such HTML file is to provide a preliminary exploration of the gen
 
 # INSTALLATION
 
-We provide two installation options, one [containerized](https://hub.docker.com/r/mmoldes/beacon_reference_implementation) and the one you're about to see (non-containerized).
+We provide two installation options, one containerized and another non-containerized.
+
+## Containerized
+
+Download the `Dockerfile` from [Github](https://github.com/EGA-archive/beacon2-ri-tools/blob/main/Dockerfile) and execute:
+
+    $ docker build -t crg/beacon2_ri:latest . # Build the container
+    $ docker run -itd --name beacon2-ri-tools crg/beacon2_ri:latest #run the image detached
+    $ docker ps  # list your containers, beacon2-ri-tools should be there
+    $ docker exec -it beacon2-ri-tools bash # connect to the container interactively
+
+After the last command, you will arrive in `/usr/share/beacon-ri/`, then execute:
+
+    $ bash beacon2-ri-tools/BEACON/bin/dexploy_external_tools.sh
+
+that will inject the external tools and DBs into the image and modify the configs. It will also run a test. Note that it will take some time (and disk space!!!).
+
+## Non containerized
 
 Download the latest version from [Github](https://github.com/EGA-archive/beacon2-ri-tools):
 
