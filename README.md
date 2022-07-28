@@ -83,17 +83,19 @@ Download the `Dockerfile` from [Github](https://github.com/EGA-archive/beacon2-r
     $ docker ps  # list your containers, beacon2-ri-tools should be there
     $ docker exec -it beacon2-ri-tools bash # connect to the container interactively
 
-_NB_ Docker containers are fully isolated. If you need the mount a volume to the container please use the following syntax:
+_NB:_ Docker containers are fully isolated. If you need the mount a volume to the container please use the following syntax:
 
     docker run --detach --volume your_volume --name beacon2-ri-tools crg/beacon2_ri:latest
 
 After the `docker exec` command, you will arrive in `/usr/share/beacon-ri/`, then execute:
 
-    $ bash beacon2-ri-tools/BEACON/bin/deploy_external_tools.sh
+    $ nohup beacon2-ri-tools/BEACON/bin/deploy_external_tools.sh
 
 ...that will inject the external tools and DBs into the image and modify the configs. It will also run a test. Note that it will take some time (and disk space!!!).
 
-The last step is to deploy MongoDB. Please download the `docker-compose.yml` file [here](https://github.com/EGA-archive/beacon2-ri-tools/blob/main/docker-compose.yml) and execute:
+The last step is to deploy MongoDB. We will deploy it \*\*outside\*\* the &lt;beacon2-ri-tools> container so please `exit` from it.
+
+Please download the `docker-compose.yml` file [here](https://github.com/EGA-archive/beacon2-ri-tools/blob/main/docker-compose.yml) and execute:
 
     $ docker-compose up -d
 
