@@ -298,7 +298,7 @@ We provide two installation options, one containerized and another non-container
 
 Download the C<Dockerfile> from L<Github|https://github.com/EGA-archive/beacon2-ri-tools/blob/main/Dockerfile> and execute:
 
-  $ docker build -t crg/beacon2_ri:latest . # Build the container
+  $ docker build -t crg/beacon2_ri:latest . # Build the container (~1.1G)
   $ docker run -tid --name beacon2-ri-tools crg/beacon2_ri:latest #run the image detached
   $ docker ps  # list your containers, beacon2-ri-tools should be there
   $ docker exec -ti beacon2-ri-tools bash # connect to the container interactively
