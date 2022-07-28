@@ -79,19 +79,21 @@ We provide two installation options, one containerized and another non-container
 Download the `Dockerfile` from [Github](https://github.com/EGA-archive/beacon2-ri-tools/blob/main/Dockerfile) and execute:
 
     $ docker build -t crg/beacon2_ri:latest . # Build the container
-    $ docker run -itd --name beacon2-ri-tools crg/beacon2_ri:latest #run the image detached
+    $ docker run -tid --name beacon2-ri-tools crg/beacon2_ri:latest #run the image detached
     $ docker ps  # list your containers, beacon2-ri-tools should be there
     $ docker exec -it beacon2-ri-tools bash # connect to the container interactively
 
-_NB:_ Docker containers are fully isolated. If you need the mount a volume to the container please use the following syntax:
+_NB:_ Docker containers are fully isolated. If you need the mount a volume to the container please use the following syntax (`-v host:container`). Find an example below:
 
-    docker run --detach --volume your_volume --name beacon2-ri-tools crg/beacon2_ri:latest
+    $ docker run -tid --volume /media/mrueda/4TBA:/4TB --name beacon2-ri-tools crg/beacon2_ri:latest
 
 After the `docker exec` command, you will arrive in `/usr/share/beacon-ri/`, then execute:
 
-    $ nohup beacon2-ri-tools/BEACON/bin/deploy_external_tools.sh
+    $ nohup beacon2-ri-tools/BEACON/bin/deploy_external_tools.sh &
 
-...that will inject the external tools and DBs into the image and modify the configs. It will also run a test. Note that it will take some time (and disk space!!!).
+...that will inject the external tools and DBs into the image and modify the configs. It will also run a test. Note that it will take some time (and disk space!!!). You can check the log by using:
+
+    $ tail -f nohup.out
 
 The last step is to deploy MongoDB. We will deploy it \*\*outside\*\* the &lt;beacon2-ri-tools> container so please `exit` from it.
 
