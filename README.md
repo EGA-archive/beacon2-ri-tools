@@ -81,7 +81,7 @@ Download the `Dockerfile` from [Github](https://github.com/EGA-archive/beacon2-r
     $ docker build -t crg/beacon2_ri:latest . # Build the container
     $ docker run -tid --name beacon2-ri-tools crg/beacon2_ri:latest #run the image detached
     $ docker ps  # list your containers, beacon2-ri-tools should be there
-    $ docker exec -it beacon2-ri-tools bash # connect to the container interactively
+    $ docker exec -ti beacon2-ri-tools bash # connect to the container interactively
 
 _NB:_ Docker containers are fully isolated. If you need the mount a volume to the container please use the following syntax (`-v host:container`). Find an example below:
 
