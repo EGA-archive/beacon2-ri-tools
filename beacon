@@ -296,14 +296,18 @@ We provide two installation options, one containerized and another non-container
 
 =head2 Containerized
 
-Download the C<Dockerfile> from L<Github|https://github.com/EGA-archive/beacon2-ri-tools/blob/main/Dockerfile> and execute:
+Download the C<Dockerfile> from L<Github|https://github.com/EGA-archive/beacon2-ri-tools/blob/main/Dockerfile> by typing:
 
-  $ docker build -t crg/beacon2_ri:latest . # Build the container (~1.1G)
-  $ docker run -tid --name beacon2-ri-tools crg/beacon2_ri:latest #run the image detached
+  $ wget https://raw.githubusercontent.com/EGA-archive/beacon2-ri-tools/main/Dockerfile
+
+Then execute the following commands:
+
+  $ docker build -t crg/beacon2_ri:latest . # build the container (~1.1G)
+  $ docker run -tid --name beacon2-ri-tools crg/beacon2_ri:latest # run the image detached
   $ docker ps  # list your containers, beacon2-ri-tools should be there
   $ docker exec -ti beacon2-ri-tools bash # connect to the container interactively
 
-I<NB:> Docker containers are fully isolated. If you need the mount a volume to the container please use the following syntax (C<-v host:container>). Find an example below:
+I<NB:> Docker containers are fully isolated. If you need the mount a volume to the container please use the following syntax (C<-v host:container>). Find an example below (not that you need to change the paths to match yours):
 
   $ docker run -tid --volume /media/mrueda/4TBA:/4TB --name beacon2-ri-tools crg/beacon2_ri:latest
 
