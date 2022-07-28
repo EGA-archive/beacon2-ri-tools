@@ -68,7 +68,7 @@ The script transforms metadata+VCF files into Beacon Friendly Format (BFF).
 The BFF is a set of 7 text files (documents/records stored as JSON arrays) that will be loaded as _collections_ in a MongoDB database. 
 
 **Optional:** The user has the option of turning on the **BFF Genomic Variatons Browser**. With this option enabled, an HTML file will be created to be used with a web browser.
-The purpose of such HTML file is to provide a preliminary exploration of the genomic variations data. See the full documentation [here](https://b2ri-documentation.readthedocs.io/en/latest/bff_gv_browser/).
+The purpose of such HTML file is to provide a preliminary exploration of the genomic variations data. See the full documentation [here](https://b2ri-documentation.readthedocs.io/en/latest/bff-gv-browser/).
 
 # INSTALLATION
 
@@ -83,17 +83,25 @@ Download the `Dockerfile` from [Github](https://github.com/EGA-archive/beacon2-r
     $ docker ps  # list your containers, beacon2-ri-tools should be there
     $ docker exec -it beacon2-ri-tools bash # connect to the container interactively
 
-After the last command, you will arrive in `/usr/share/beacon-ri/`, then execute:
+_NB_ Docker containers are fully isolated. If you need the mount a volume to the container please use the following syntax:
+
+    docker run --detach --volume your_volume --name beacon2-ri-tools crg/beacon2_ri:latest
+
+After the `docker exec` command, you will arrive in `/usr/share/beacon-ri/`, then execute:
 
     $ bash beacon2-ri-tools/BEACON/bin/deploy_external_tools.sh
 
-that will inject the external tools and DBs into the image and modify the configs. It will also run a test. Note that it will take some time (and disk space!!!).
+...that will inject the external tools and DBs into the image and modify the configs. It will also run a test. Note that it will take some time (and disk space!!!).
+
+The last step is to deploy MongoDB. Please download the `docker-compose.yml` file [here](https://github.com/EGA-archive/beacon2-ri-tools/blob/main/docker-compose.yml) and execute:
+
+    $ docker-compose up -d
 
 ## Non containerized
 
 Download the latest version from [Github](https://github.com/EGA-archive/beacon2-ri-tools):
 
-    $ tar -xvf beacon_2.0.0.tar.gz    # Note that naming may be different
+    $ tar -xvf beacon2-ri-tools_2.0.0.tar.gz    # Note that naming may be different
 
 Alternatively, you can use git clone to get the latest (stable) version
 
