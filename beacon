@@ -319,9 +319,13 @@ After the C<docker exec> command, you will arrive in C</usr/share/beacon-ri/>, t
 
   $ tail -f nohup.out
 
-The last step is to deploy MongoDB. We will deploy it **outside** the <beacon2-ri-tools> container so please C<exit> from it.
+The last step is to deploy MongoDB. We will deploy it B<outside>> the C<beacon2-ri-tools> container so please C<exit> from it.
 
-Please download the C<docker-compose.yml> file L<here|https://github.com/EGA-archive/beacon2-ri-tools/blob/main/docker-compose.yml> and execute:
+Please download the C<docker-compose.yml> file L<here|https://github.com/EGA-archive/beacon2-ri-tools/blob/main/docker-compose.yml>: 
+
+  $ wget https://raw.githubusercontent.com/EGA-archive/beacon2-ri-tools/main/docker-compose.yml
+
+And then execute:
 
   $ docker-compose up -d
 
