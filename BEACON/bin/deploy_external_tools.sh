@@ -79,11 +79,11 @@ do
  sed -i "s|$old_dir/$name|$new_dir/$name|g" config.yaml
 done
 
-sed -i "s|/pro/NGSutils/snpEff|$share_dir/pro/snpEff|g" config.yaml  # /pro/NGSutils -> /pro
-sed -i "s|/pro/NGSutils|$share_dir/pro/NGSutils|g" config.yaml  
-sed -i "s|/media/mrueda/8TB/tmp|/tmp|g" config.yaml 
-sed -i "s|/home/mrueda/Soft/mongodb-database-tools-ubuntu2004-x86_64-100.5.1/bin|$share_dir/pro/mongodb-database-tools-ubuntu2004-x86_64-100.5.1/bin|g" config.yaml 
-sed -i "s|/usr/bin/mongosh|$share_dir/pro/mongosh|g" config.yaml 
+sed -i -e "s|/pro/NGSutils/snpEff|$share_dir/pro/snpEff|g" \
+       -e "s|/pro/NGSutils|$share_dir/pro/NGSutils|g" \
+       -e 's|/media/mrueda/8TB/tmp|/tmp|g' \
+       -e "s|/home/mrueda/Soft/mongodb-database-tools-ubuntu2004-x86_64-100.5.1/bin|$share_dir/pro/mongodb-database-tools-ubuntu2004-x86_64-100.5.1/bin|g" \
+       -e "s|/usr/bin/mongosh|$share_dir/pro/mongosh|g" config.yaml
 
 #######################
 ## Test deployment 
