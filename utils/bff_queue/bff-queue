@@ -1,0 +1,65 @@
+#!/usr/bin/env perl
+#
+#   Script that runs Mojolicius-Minion Job Queue System
+#
+#   Last Modified: Feb/01/2022
+#
+#   Version 2.0.0
+#
+#   Copyright (C) 2021-2022 Manuel Rueda (manuel.rueda@crg.eu)
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 3 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program; if not, see <https://www.gnu.org/licenses/>.
+#
+#   If this program helps you in your research, please cite.
+
+##################################################################
+# perl bff-queue minion worker -j 1
+# perl /pro/beacon/utils/bff_queue/bff-queue minion job \
+#     -e beacon_task \
+#     -a '[ "cd /home/mrueda/test_beacon ; /pro/beacon/beacon vcf -i test_1000G.vcf.gz -p param.in -n 1 > log"]'
+##################################################################
+use Carp;
+use Mojolicious::Lite -signatures;
+
+# Usage
+die qq(Usage:\n ./bff-queue minion job -e beacon_task -a '[ "/pro/beacon/beacon vcf -i test_1000G.vcf.gz -p param.in -n 1 > beacon.log 2>&1"]'\n) unless @ARGV;
+
+# Using sqlite for the queue
+plugin Minion => { SQLite => 'sqlite:' . app->home->child('minion.db'), };
+
+# Define variables
+my $debug = 0;
+my $queue = 'default';
+
+# Add task
+app->minion->add_task(
+    beacon_task => sub ( $job, @args ) {
+        my $id = $job->id;
+        $job->app->log->info("Your beacon job is added to the queue <$queue> -> " . $id );
+        submit_cmd( \@args );
+        say 'This is a background worker process.';
+    }
+);
+
+# Subroutine
+sub submit_cmd {
+    my $args = shift;
+    my $cmd .= join ' ', @$args;
+    my $msg = "Failed to execute: $cmd\n";
+    system("$cmd") == 0 or ( $debug ? confess($msg) : croak($msg) );
+    return 1;
+}
+
+# Start Mojolicius->Minion app
+app->start;

@@ -1,0 +1,852 @@
+#!/usr/bin/env perl
+#
+#   A script that validates metadata [XLSX|JSON] against
+#   Beacon v2 Models defaul schemas and serializes them to BFF (JSON)
+#
+#   Last Modified: May/19/2022
+#
+#   Version 2.0.0
+#
+#   Copyright (C) 2021-2022 Manuel Rueda (manuel.rueda@crg.eu)
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 3 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program; if not, see <https://www.gnu.org/licenses/>.
+#
+#   If this program helps you in your research, please cite.
+
+use strict;
+use warnings;
+use feature qw(say);
+use autodie;
+use Getopt::Long;
+use Pod::Usage;
+use Data::Dumper;
+use FindBin qw($Bin);
+use Text::CSV_XS;
+use Text::Unidecode;
+use JSON::XS;
+use JSON::Validator;
+use File::Basename;
+use File::Spec::Functions qw(catdir catfile);
+use File::Which qw(which);
+use List::MoreUtils qw(any);
+use Scalar::Util qw(looks_like_number);
+use Path::Tiny;
+use Term::ANSIColor qw(:constants);
+$Data::Dumper::Sortkeys = 1;
+
+my $debug   = 0;
+my $verbose = 0;
+require open ":std", ":encoding(UTF-8)" if $debug;
+
+##### Main #####
+validate_input_data();
+################
+exit;
+
+sub validate_input_data {
+
+    # Defining a few variables
+    my $version    = '2.0.0';
+    my $schema_dir = catdir( $Bin, 'deref_schemas' );
+    my $out_dir    = '.';
+
+    # Reading arguments
+    GetOptions(
+        'input|i=s{1,7}'    => \my @in_files,                          # array
+        'schema-dir|s=s'    => \$schema_dir,                           # string
+        'out-dir|o=s'       => \$out_dir,                              # string
+        'help|?'            => \my $help,                              # flag
+        'man'               => \my $man,                               # flag
+        'gv'                => \my $gv_flag,                           # flag
+        'gv-vcf'            => \my $gv_vcf_flag,                       # flag
+        'ignore-validation' => \my $ignore_validation,                 # flag
+        'debug=i'           => \$debug,                                # integer
+        'verbose'           => \$verbose,                              # flag
+        'no-color|nc'       => \my $no_color,                          # flag
+        'version|v'         => sub { say "$0 Version $version"; exit; }
+    ) or pod2usage(2);
+    pod2usage(1)                              if $help;
+    pod2usage( -verbose => 2, -exitval => 0 ) if $man;
+    pod2usage(
+        -message => "Please specify a valid input file(s) -i <xlsx|*json>\n",
+        -exitval => 1
+    ) unless (@in_files);
+    pod2usage(
+        -message => "Please specify a valid directory for --schema-dir\n",
+        -exitval => 1
+    ) if ( !-d $schema_dir );
+    pod2usage(
+        -message => "Please specify a valid directory for --out-dir\n",
+        -exitval => 1
+    ) if ( !-d $out_dir );
+
+    # Turning color off if argument <--no-color>
+    $ENV{'ANSI_COLORS_DISABLED'} = 1 if $no_color;
+
+    # Define a few more variables
+    my @schemas =
+      qw (analyses  biosamples  cohorts  datasets  genomicVariations  individuals  runs);
+
+    #     @schemas = qw (individuals);
+
+    @schemas = grep { $_ ne 'genomicVariations' } @schemas
+      unless ( $gv_flag || $gv_vcf_flag );
+
+    # Check input file type 'xlsx' or 'json' and load %input
+    my %input = check_input_type( \@in_files, \@schemas );
+    my $input = exists $input{xlsx} ? 'xlsx' : 'bff';
+
+    # Load default schema location into %info
+    for my $schema (@schemas) {
+        $input{$schema}{location} =
+          catfile( $schema_dir, $schema, "defaultSchema.json" );
+
+        # Add more fields to %input if 'xlsx'
+        if ( $input eq 'xlsx' ) {
+            $input{$schema}{$_} = catfile( $out_dir, "$schema.$_" )
+              for ( 'json', 'csv' );
+        }
+    }
+    print Dumper \%input if $debug > 2;
+
+    # Start printing to STDOUT
+    say BOLD CYAN program_header($version);
+
+    ##############################################
+    # START DATA VALIDATION AGAINST JSON SCHEMAs #
+    ##############################################
+    for my $schema (@schemas) {
+        say BOLD BLUE '==== SCHEMA: ', uc($schema), ' ====', RESET;
+        my $location = $input{$schema}{location};
+        say "Validating  <$schema> data against => $location JSON schema"
+          if $verbose;
+
+        # Route 1 - XLSX
+        if ( $input eq 'xlsx' ) {
+            my $csv = $input{$schema}{csv};
+            my $out = $input{$schema}{json};
+            my ( $ok, $json ) =
+              validate_xlsx( $schema, $input{xlsx}, $csv, $location );
+            if ($ignore_validation) {
+                $ok = 1;
+                print "Ignoring JSON Validation->";
+            }
+            say "Writing <$out> file\n" and write_json( $out, $json ) if $ok;
+        }
+
+        # Route 2 - JSON
+        else {
+            validate_json( $schema, $input{bff}{$schema},
+                $location, $gv_vcf_flag )
+              if exists $input{bff}{$schema};
+        }
+    }
+
+    ############################################
+    # END DATA VALIDATION AGAINST JSON SCHEMAs #
+    ############################################
+    return 1;
+}
+
+sub validate_xlsx {
+
+    my ( $sheet, $input, $sheet_csv, $schema_file ) = @_;
+
+    #################################
+    # First we load the JSON schema #
+    #################################
+    my $json_schema = load_json_schema($schema_file);
+
+    ###################################
+    # Secondly we go from XLSX to CSV #
+    ###################################
+
+    #  We'll use 'xlsx2csv' to create a csv for a given sheet (entity)
+    #  NB: We tried 'unoconv' and 'xls2csv' (catdoc) but neither
+    #      let us select and save by the sheet's name
+    #      unoconv -f xls beacon_v2_default_schemas_051121.xlsx
+    #      xls2csv *.xls  | awk '{print > "tab"NR".csv"}' RS="\014"
+
+    # We'll get the path for xlsx2csv exe
+    my $xlsx2csv = which('xlsx2csv');
+
+    # say $xlsx2csv;
+    # xlsx2csv -s 0  beacon_v2_default_schemas_051121.xlsx
+    # xlsx2csv is nitpicky about white spaces on sheet names
+
+    # and die if it's not installed
+    die BOLD RED "xlsx2csv not installed" unless -x $xlsx2csv;
+
+    # If installed we'll execute the below $cmd
+    my $cmd = "$xlsx2csv -n '$sheet' $input > $sheet_csv";
+    system($cmd);
+
+    ##################################################################
+    # Finally we read the CSV file and we validate it (line by line) #
+    ##################################################################
+    my $csv = Text::CSV_XS->new(
+        {
+            binary    => 1,
+            auto_diag => 1,
+            sep_char  => ','    # not really needed as this is the default
+        }
+    );
+
+    #####################
+    # Start Loop on CSV #
+    #####################
+    my $fh = path($sheet_csv)->openr_utf8;
+
+    # First we load the header and we get rid of \s
+    my $header = $csv->getline($fh);
+    s/\s+//g for @$header;    # I could not do it w/ Text::CSV
+
+    # We will accumulate the values on AoH @json_rows
+    my @json_rows = ();
+
+    # The errors will be stored in @json_errors
+    my @json_errors = ();
+
+    # We keep track of proccesed lines
+    my $count = 0;
+
+    while ( my $row = $csv->getline($fh) ) {
+
+        # To fetch indiviual elements
+        #say $row->[0];
+
+        # Using a sub to create a hash with nested values
+        my $row_hash = row2hash( $header, $row );
+
+        # Validation with JSON::Validator
+        my $error = validate_against_json_schema( $row_hash, $json_schema );
+
+        # Accumulate errors (if any) at array @json_errors
+        push @json_errors, join ' ', ( "Row", $csv->record_number(), $error )
+          if $error;
+
+        # We add each row to the an AoH @json_rows
+        push @json_rows, $row_hash;
+
+        # Print stats if debug|verbose
+        say_rows_processed( $sheet, 'csv', $csv->record_number() );
+
+        # We'll use this value to check if file was empty
+        $count = $csv->record_number();
+
+    }
+    close $fh;
+
+    ################
+    # End Loop CSV #
+    ################
+
+    # Send to STDOUT the messages (if any)
+    say_errors( \@json_errors );
+
+    # Delete $sheet_csv file
+    unlink($sheet_csv) unless $debug;
+
+    ########################
+    # End of work with CSV #
+    ########################
+
+    # We return 0 for empty csv or with errors
+    my $ok = ( $count == 0 || @json_errors ) ? 0 : 1;
+    return ( $ok, \@json_rows );
+}
+
+sub validate_json {
+
+    my ( $schema, $json_file, $schema_file, $gv_vcf_flag ) = @_;
+
+    #################################
+    # First we load the JSON schema #
+    #################################
+    my $json_schema = load_json_schema($schema_file);
+
+    ####################################################
+    # Second we load the JSON array elements (or rows) #
+    ####################################################
+
+    my @json_errors;
+    my $count = 1; # Starting in 1 to facilitate awk 'NR == i + 1' (yet being an array)
+
+    # Problem:
+    #
+    #   When debugging JSON schemas sometimes we need to validate <genomicVariationsVcf.json.gz>
+    #   These files can be VERY LARGE and splitting to chunks with jq | split is non-efficient
+    #   We cannot load it into memory as we do with the other collections
+    #
+    # Solution:
+    #   We open gunzipped and renamed <genomicVariations.json> as <$fh> via --gv-vcf flag
+    #   Note that <genomicVariations[Vcf].json> has ONE JSON DOCUMENT PER LINE)
+
+    if ( $schema eq 'genomicVariations' && $gv_vcf_flag ) {
+
+        # my $fh    = path($json_file)->filehandle;
+        my $fh = path($json_file)->openr_utf8;
+
+        <$fh>;    #get rid of [
+        while ( my $line = <$fh> ) {
+
+            # Parse unwanted lines
+            last if $line =~ m/^\]/;
+            chomp $line;                     # \
+            chop $line if $line =~ m/,$/;    #  (last line does not have comma)
+
+            my $row = decode_json($line); # Decode to Perl data structure (input must be UTF-8)
+            my $error = validate_against_json_schema( $row, $json_schema );
+
+            # Accumulate errors (if any) at array @json_errors
+            push @json_errors, join ' ', ( "Row", $count, $error ) if $error;
+
+            # Increase row
+            $count++;
+
+            # Print stats if debug|verbose
+            say_rows_processed( $schema, 'json', $count );
+        }
+        close $fh;
+    }
+    else {
+        my $data = read_json($json_file);
+        for my $row ( @{$data} ) {
+            my $error = validate_against_json_schema( $row, $json_schema );
+
+            # Accumulate errors (if any) at array @json_errors
+            push @json_errors, join ' ', ( "Row", $count, $error ) if $error;
+
+            # Increase row
+            $count++;
+
+            # Print stats if debug|verbose
+            say_rows_processed( $schema, 'json', $count );
+        }
+    }
+
+    # Send to STDOUT the messages (if any)
+    say_errors( \@json_errors );
+    return 1;
+}
+
+sub say_rows_processed {
+
+    my ( $schema, $type, $count ) = @_;
+    say BOLD YELLOW $schema , ' ', uc($type), ' | Rows processed = ', $count
+      if ( ( $debug || $verbose ) && $count % 10 == 0 );
+    return 1;
+}
+
+sub say_errors {
+
+    my $errors = shift;
+    if ( @{$errors} ) {
+        say BOLD RED( join "\n", @{$errors} ), RESET;
+    }
+    else {
+        say BOLD GREEN 'Hurray! No errors found', RESET;
+    }
+    return 1;
+}
+
+sub row2hash {
+
+    my ( $header, $row ) = @_;
+
+    # Defining needed variables
+    my $anchor        = '^[a-zA-Z0-9-]+';
+    my $obj_separator = '\.';
+    my $arr_separator = '_';
+    my $obj_regex     = $anchor . $obj_separator . '{1}';
+    my $arr_regex     = $anchor . $arr_separator . '{1}';
+
+    # Regardless of nestedness, first we map key(header)->value(cell) as 1D hash (%excel)
+    # NB: 'jq' utility can also perform the csv2json mapping
+    my %excel = ();
+    @excel{@$header} = @$row;
+
+    # Now we get rid of empty columns (often CSVs have extra empty colums)
+    # NB: We are foreced to check both HEADER+ROW each time, otherwise
+    #     we won't be able to tell is a row-column is empty for a reason
+    # A, B, C, D, AA, BB
+    # x, y, z, i,   ,      <= header (AA and BB empty for no reason
+    # 1,  , 3, 4,   ,      <= row1   (idem + B empty for a reason)
+    for my $key ( keys %excel ) {
+        next if $key =~ m/[\._]/;
+        delete $excel{$key} unless $excel{$key};
+    }
+    #################################
+    #      IMPORTANT STEP BELOW     #
+    #################################
+    #
+    # In Beacon v2 Models there exist VERY COMPLEX nested data structures:
+    #                           H                     A                                H
+    #  Ex1: cohorts->{cohortExclusionCriteria}[diseaseConditions{ageOfOnset,stage,diseaseCode{id,label}}]
+    #                   A                 A               H
+    #  Ex2: gv->[caseLevelData[phenotypicEffects{evidenceType{id,label}}]]
+    #
+    # HoHoH...are easy to unflatten
+    # AoA.... are difficult. Even if we flatened all headers, the user will need to type delimiters by themselves
+    #
+    # For instance:
+    # phenotypicFeatures_modifiers_id  => [id1, id2], [id3, id4]
+    # phenotypicFeatures_modifiers_label => [la1, la2], [la3, la4]
+    #
+    # December 2021: We decided that the user will type complex (array-based) data explictely in the CSV
+    #                For terms that are arrays, the script will parse and aggreate *****up to 1D******
+    #
+    # Separators in CSV header fields will tell us if we're dealing with an OBJECT or an ARRAY-1D
+    #
+    # 1 - OBJECTS
+    # foo.bar = 1
+    # foo.baz = 2
+    # will become:
+    # foo => { bar => 1, baz => 2}
+    #
+    # 2 - ARRAYS
+    # foo_bar = "a,b"
+    # foo_baz = "1,2"
+    # will become:
+    # foo => [ {bar => a, baz => 1}, {bar => b, baz => 2} ]
+    #
+    # NB: We'll only print terms if check_non_empty_val( \$excel{$key} )
+
+    # Header fields will be grouped into objects/arrays-1d
+    my @objects = grep { $_ !~ m/$arr_regex/ } @$header;
+    my @arrays  = grep { $_ =~ m/$arr_regex/ } @$header;
+
+    # The output will be a ref hash named $json
+    my $json = {};
+
+    ####################
+    # OBJECTS (HoH...) #
+    ####################
+    for my $key (@objects) {
+
+        # We get the terms by splitting the header
+        my $terms = [ split /$obj_separator/, $key ];
+
+        # Now we convert @terms to a nested hash ($json) via sub array2hash
+        if ( check_non_empty_val( \$excel{$key} ) ) {
+
+            # Example of HoHoA: datasets => dataUseConditions.duoDatause_[]
+            my $tmp_ref =
+              $excel{$key} =~ m/^\[/
+              ? decode_json( unidecode( $excel{$key} ) )
+              : \$excel{$key};
+            $json = array2hash( $json, $terms, $tmp_ref );
+        }
+    }
+
+    #######################
+    # ARRAYS (Ao[A|H]...) #
+    #######################
+
+    # ******************************************************
+    # *** Strategy:                                        *
+    #     Instead of trying to fill the array now, we will *
+    #     load a hash and convert it to array later        *
+    #                                                      *
+    # *** Values from 2D,3D,4D must be introduced by the   *
+    #     user in JSON format                              *
+    # ******************************************************
+
+    # STEP 1: Store array elements as a temporary hash (see $suffix) inside $json
+    my @array_terms = ();
+    my $suffix      = '_hash';
+    for my $key (@arrays) {
+
+        if ( check_non_empty_val( \$excel{$key} ) ) {
+
+            # First we get all terms (we treat arrays|objects equally)
+            my @obj_terms = ( split /$arr_separator|$obj_separator/, $key );
+
+            # Secondly we fetch 1D ($obj_terms[0]) and store it into @array_terms
+            push @array_terms, $obj_terms[0];
+            my $arr_term_suffix = $obj_terms[0] . $suffix;
+
+            # Third, we get the [#elements] from splitting the values (can be single or comma separated)
+            # e.g., (id:0001,id0002) will have 2 elements
+            # Possibilities:
+            #  1 - $excel{$key} =~ m/^\[ ====> decode_json( $excel{$key}
+            #  2 - $excel{$key} != m/^\[ ====> we have to split by ','
+            # NB: We store references ($values) for both <strings> and <json>
+            my $values =
+              $excel{$key} =~ m/^\[/
+              ? decode_json( unidecode( $excel{$key} ) )
+              : [ split /,/, $excel{$key} ];
+
+            # Finally we create a multidimensional hash inside $json
+            for ( my $i = 0 ; $i <= $#{$values} ; $i++ ) {
+
+                # We create @tmp_array to include the "element_$i" (to be used later)
+                my $tmp_array = [
+                    $arr_term_suffix, "element_$i",
+                    @obj_terms[ 1 .. $#obj_terms ]
+                ];
+                $json = array2hash( $json, $tmp_array, $values->[$i] );
+            }
+        }
+    }
+
+    #print Dumper $json;
+
+    # STEP 2: Transform temporary hash (see $suffix) to an array
+    for my $array_term (@array_terms) {
+        my $array_term_suffix = $array_term . $suffix;
+
+        # We sort the keys to keep the same order as in CSV
+        for my $index ( sort keys %{ $json->{$array_term_suffix} } ) {
+            push @{ $json->{$array_term} },
+              { %{ $json->{$array_term_suffix}{$index} } };
+        }
+        delete $json->{$array_term_suffix};
+    }
+    print Dumper $json if $debug > 2;
+
+    #################################
+    #      IMPORTANT STEP ABOVE     #
+    #################################
+
+    return $json;
+}
+
+sub check_non_empty_val {
+
+    my $ref = shift;
+    return ( defined $$ref && $$ref ne '' );
+}
+
+sub array2hash {
+
+    my $ref       = \shift;
+    my $array     = shift;
+    my $ref_value = shift;
+    my $hash      = $$ref;
+
+    # https://stackoverflow.com/questions/11505100/perl-how-to-turn-array-into-nested-hash-keys
+    $ref = \$$ref->{$_} foreach @{$array};
+
+    # Now proceed depending on the type of reference
+    if ( ref $ref_value eq 'SCALAR' ) {
+        $$ref = coerce_to_number_or_boolean($$ref_value);
+    }
+    else {
+        $$ref = coerce_to_number_or_boolean($ref_value);
+    }
+
+    #print Dumper $hash if $debug;
+    return $hash;
+}
+
+sub coerce_to_number_or_boolean {
+
+    my $val = shift;
+    my $out = looks_like_number($val)
+      ? 0 + $val    # coercing to number (split values are strings to Perl)
+      ##########################################################
+      # Problem JSON::Validator needs booleans
+      #         (yes real booleans not those in Perl)
+      # Solution A: lc($val) eq 'true'  ? \1
+      #             lc($val) eq 'false' ? \0
+      # https://stackoverflow.com/questions/43867553/how-to-send-boolean-value-from-perl-script-without-converting-them-into-string
+      # This solution for decoding_json and serialization, however is not enough for JSON:Validator (works at the Perl Hash level)
+      # NB: Coercing did not work either (line 628) --> $validator = $validator->coerce('booleans');
+      #
+      # Solution B: use JSON::XS::true and JSON::XS::false <== CHOSEN
+      : lc($val) eq 'true'  ? JSON::XS::true
+      : lc($val) eq 'false' ? JSON::XS::false
+      #######################################
+      : $val;
+    return $out;
+}
+
+sub load_json_schema {
+
+    my $schema_file = shift;
+    my $data        = read_json($schema_file);
+
+    ##########################################################
+    # Problem: We wanted to use $ref                         #
+    #     but JSON::Validator complains about ../common      #
+    # Solution: Attempted to move from relative paths to abs #
+    #     and then use method 'bundle'                       #
+    # https://metacpan.org/pod/JSON::Validator::Schema       #
+    #   **** DEPRECATED -> DID NOT WORK ******               #
+    # use Cwd qw(abs_path);                                  #
+    #my $abs_path = abs_path($schema_file);                  #
+    #my($filename, $dir, $suffix) = fileparse($abs_path);    #
+    #$str =~ s#\.\./common#$dir\.\./common#g;                #
+    ##########################################################
+
+    # In debugging mode we willperform a self validation
+    if ($debug) {
+
+        # Models use JSON schema version = "$schema": "https://json-schema.org/draft/2020-12/schema"
+        # We are going to JSON::Validator directly (we don't know the schema version up front)
+        my $validator = JSON::Validator::Schema->new($data);
+        die BOLD RED
+"ERROR: The schema does not follow JSON Schema specification\nSee https://json-schema.org/draft/2020-12/schema"
+          if $validator->is_invalid;
+        say "Schema file <$schema_file> has passed the self-validation";
+    }
+
+    # Get all properties as an array
+    my $json_properties = $data->{properties};
+    my @all_properties  = keys %$json_properties;
+    say 'All properties => ', join ',', @all_properties if $verbose;
+
+    # Create an slice with only the desired information
+    my $json_slice;
+    $json_slice->{type}           = "object";
+    $json_slice->{all_properties} = \@all_properties;
+    $json_slice->{properties}     = $json_properties;
+    $json_slice->{required}       = $data->{required};
+
+    #print Dumper $json_slice;
+    return $json_slice;
+}
+
+sub validate_against_json_schema {
+
+    my ( $json, $json_schema ) = @_;
+
+    # Create object
+    my $validator = JSON::Validator->new;
+
+    # Load schema
+    $validator->schema($json_schema);
+
+    # Validate
+    my @errors = $validator->validate($json);
+
+    # Return string with errors
+    return @errors ? join( "\n", @errors ) : '0';
+}
+
+sub read_json {
+
+    my $json_file = shift;
+    my $str       = path($json_file)->slurp_utf8;
+    my $json      = decode_json($str);           # Decode to Perl data structure
+    return $json;
+}
+
+sub write_json {
+
+    my ( $file, $json_array ) = @_;
+    my $json = JSON::XS->new->utf8->canonical->pretty->encode($json_array);
+    path($file)->spew_utf8($json);
+    return 1;
+}
+
+sub check_input_type {
+
+    my ( $in_files, $schemas ) = @_;
+
+    my @suffixes = qw(.json .xlsx);
+    my ( $name, $path, $suffix ) = fileparse( $in_files->[0], @suffixes ); # WARNING => Checking $suffix on 1st file only!!!
+    my %bff;
+    if ( $suffix eq '.xlsx' ) {
+        $bff{xlsx} = $in_files->[0];
+    }
+    elsif ( $suffix eq '.json' ) {
+        for my $in_json ( @{$in_files} ) {
+            ( $name, $path, $suffix ) = fileparse( $in_json, @suffixes );
+            if ( any { $_ eq $name } @{$schemas} ) {
+                $bff{bff}{$name} = $in_json;
+            }
+            else {
+                my $msg =
+                  $name eq 'genomicVariationsVcf'
+                  ? qq(Sorry we can't use the filename <$in_json>. Please rename it to <genomicVariations.json>)
+                  : $name eq 'genomicVariations'
+                  ? 'Please use the flag --gv to include <genomicVariations>'
+                  : qq(Sorry, we can't accept <$name> as a preffix for any BFF collection. Accepted values are:\n@{ $schemas }\n);
+                die BOLD RED $msg;
+            }
+        }
+    }
+    else {
+        die BOLD RED
+"Sorry, we only accept <*.xlsx> or <*.json> (unzipped) as input files";
+    }
+    return wantarray ? %bff : \%bff;
+}
+
+sub program_header {
+
+    my $version = shift;
+    my $str     = <<EOF;
+****************************************
+*  Beacon v2 Reference Implementation  *
+* - BEACON FRIENDLY FORMAT VALIDATOR - *      
+*           Version: $version             *
+*   (C) 2021-2022 Manuel Rueda, PhD    *
+*    GNU General Public License v3     *
+****************************************
+EOF
+    return $str;
+}
+
+=head1 NAME
+
+bff-validator: A script that validates metadata (XLSX|JSON) against Beacon v2 Models and serializes them to BFF (JSON)
+
+
+=head1 SYNOPSIS
+
+
+bff-validator -i <file.xlsx|*json> [-options]
+
+     Arguments:                       
+       -i|input                       Metadata xlsx file or *.json files
+
+     Options:
+       -s|schema-dir                  Directory with JSON schemas (must have JSON pointers de-referenced)
+       -o|out-dir                     Output (existing) directory for the BFF files (only to be used if input => XLSX)
+       -gv                            Set this option if you want to process <genomicVariations> entity
+       -ignore-validation             Writes JSON collection regardless of results from validation against JSON schemas (AYOR!)
+       -h|help                        Brief help message
+       -man                           Full documentation
+       -debug                         Print debugging (from 1 to 5, being 5 max)
+       -verbose                       Verbosity on
+       -nc|-no-color                  Don't print colors to STDOUT
+     
+     Experimental:
+       -gv-vcf                        Set this option to read <genomicVariations.json> from <beacon vcf> (with one document x line)
+
+=head1 CITATION
+
+The author requests that any published work that utilizes B<B2RI> includes a cite to the the following reference:
+
+Rueda, M, Ariosa R. "Beacon v2 Reference Implementation: a toolkit to enable federated sharing of genomic and phenotypic data". I<Bioinformatics>, btac568, https://doi.org/10.1093/bioinformatics/btac568
+
+=head1 SUMMARY
+
+bff-validator: A script that validates metadata (XLSX|JSON) against Beacon v2 Models and serializes it to BFF (JSON)
+
+=head1 HOW TO RUN BFF-VALIDATOR
+
+The script runs on command-line Linux (tested on Debian-based distribution). Perl 5 is installed by default on Linux, 
+but we will need to install a few CPAN modules.
+
+First we install cpanminus (with sudo privileges):
+
+   $ sudo apt-get install cpanminus
+
+Second we use cpanm to install the CPAN modules:
+
+   $ cpanm --sudo --installdeps .
+
+If you prefer to have the dependencies in a "virtual environment" (i.e., install the CPAN modules in the directory of the application) we recommend using the module Carton.
+
+   $ cpanm --sudo Carton
+
+Then, we can install our dependencies:
+
+   $ carton install
+
+Also, we're using I<xlsx2csv>, which is a python script. 
+
+   $ sudo pip install xlsx2csv
+
+For executing C<bff-validator> you will need:
+
+=over
+
+=item Input file:
+      
+You have two options:
+
+B<A)> A XLSX file consisting of multiple sheets. A template version of this file is provided with this installation.
+
+Currently, the file consists of 7 sheets that match the Beacon v2 Models.
+
+Please use the flag C<--gv> should you want to validate the data in the sheet <genomicVariations>.
+
+I<NB:> If you have multiple CSV files instead of a XLSX file you can use the included utility L<csv2xlsx|https://github.com/EGA-archive/beacon2-ri-tools/blob/main/utils/models2xlsx/csv2xlsx> that will join all CSVs into 1 XLSX.
+
+   $ ./csv2xlsx *csv -o out.xlsx
+
+B<B)> A set of JSON files that follow the Beacon Friendly Format. The files MUST be uncompressed and named <analyses.json>, <biosamples.json>, etc.
+
+=item Beacon v2 Models (with JSON pointers dereferenced)
+
+You should have them at C<deref_schemas> directory.
+
+
+=back
+
+B<Examples:>
+
+   $ ./bff-validator -i file.xlsx
+
+   $ $path/bff-validator -i file.xlsx -o my_bff_outdir
+
+   $ $path/bff-validator -i my_bff_indir/*json -s deref_schemas -o my_bff_outdir 
+
+   $ $path/bff-validator -i file.xlsx --gv --schema-dir deref_schemas --out-dir my_bff_outdir
+  
+   $ carton exec -- ./bff-validator -i file.xlsx # If using Carton
+
+
+=head2 TIPS ON FILLING OUT THE EXCEL TEMPLATE
+
+   * Please, before filling in any field, check out the provided template for ../../CINECA_synthetic_cohort_EUROPE_UK1/*xlsx
+   * You can use Unicode, however, the script will 'unidecode' arrays/objects (e.g., quotes from spanish keyboard) 
+   * Header fields: 
+      - Dots ('.') represent objects: 
+          Examples (values):
+            1 - foo
+            2 - NCIT:C20197
+            3 - true # booleans
+            4 - ["foo","bar","baz"] # arrays are also allowed
+      - Underscores ('_') represent arrays: 
+          * Up to 1D (e.g., individuals->measures_assyCode.id) the values are comma separated
+             Examples (values):
+              1 - measures_assayCode.id
+                  LOINC:35925-4,LOINC:3141-9,LOINC:8308-9
+                 measures_assayCode.label
+                  BMI,Weight,Height-standing
+                  
+          * Others - Values for array fields start with '[' and end with ']'
+             Examples (values): 
+              1 - ["foo":{"bar": "baz"}}]
+              2 - ["foo","bar","baz"]
+
+=head2 COMMON ERRORS AND SOLUTIONS
+
+   * Error message: Wide character at foo.bar
+     Solution: You have Unicode (non-ASCII) characters (likely double quotes) in a place where they should not be.
+
+   * Error message: , or } expected while parsing object/hash, at character offset 574 (before "]")
+     Solution: Make sure you have the right amount of opening or closing keys/brackets.
+
+I<NB:> You can use the flag C<--ignore-validation> and check the temporary files at C<-o> directory.
+
+=head1 AUTHOR 
+
+Written by Manuel Rueda, PhD. Info about CRG can be found at L<https://www.crg.eu>.
+
+=head1 REPORTING BUGS
+
+Report bugs or comments to <manuel.rueda@crg.eu>.
+
+=head1 COPYRIGHT
+
+This PERL file is copyrighted. See the LICENSE file included in this distribution.
+
+=cut

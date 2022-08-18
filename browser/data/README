@@ -1,0 +1,14 @@
+Panels README
+---------------------
+
+* Cardiopathy panel (cardiomiopathy and chanelopathies)
+Grassi et al, 2020. Genetic variants of uncertain significance: How to match scientific rigour and standard of proof in sudden cardiac death?
+https://doi.org/10.1016/j.legalmed.2020.101712
+
+* Exome panel
+https://www.genenames.org/download/statistics-and-files/
+wget --no-check-certificate https://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/tsv/locus_groups/protein-coding_gene.txt
+cut -f2 protein-coding_gene.txt  |sed '1d' > exome.lst
+
+* Invitae Multi-Cancer panel 
+https://www.invitae.com/en/physician/tests/01101/?cat=CAT000015

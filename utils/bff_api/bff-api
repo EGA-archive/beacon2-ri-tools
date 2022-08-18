@@ -1,0 +1,126 @@
+#!/usr/bin/env perl
+#
+#   Script that enables queries to MongoDB
+#   Adapted from https://gist.github.com/jshy/fa209c35d54551a70060 -> from Mojolicius Wiki.
+#
+#   Last Modified: Feb/10/2022
+#
+#   Version 2.0.0
+#
+#   Copyright (C) 2021-2022 Manuel Rueda (manuel.rueda@crg.eu)
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 3 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program; if not, see <https://www.gnu.org/licenses/>.
+#
+#   If this program helps you in your research, please cite.
+
+use Mojolicious::Lite;
+
+#use Mojolicious::Plugin::Mongodb;
+use MongoDB;
+
+helper 'mongo' => sub {
+    my ( $self, $name ) = @_;
+    my $host = 'mongodb://root:example@127.0.0.1:27017/beacon?authSource=admin';
+    my $conn = MongoDB::MongoClient->new( host => $host );
+};
+
+#############
+# Beacon v2 #
+#############
+
+# get databases names
+any '/' => sub {
+    my $self  = shift;
+    my @names = $self->mongo->database_names;
+    $self->render( json => \@names );
+};
+
+# get database collections
+any [qw(GET)] => '/:db' => sub {
+    my $self = shift;
+    my @collections =
+      $self->mongo->get_database( $self->param('db') )->collection_names;
+    $self->render( json => \@collections );
+};
+
+# return collection items
+get '/:db/:collection' => sub {
+    my $self = shift;
+    my @items =
+      map { $_->{_id} = $_->{_id}->value; $_ }
+      $self->mongo->get_database( $self->param('db') )
+      ->get_collection( $self->param('collection') )->find()->all;
+    $self->render( json => \@items );
+};
+
+# get record by /:key/:value
+get '/:db/:collection/:key/:value' => sub {
+    my $self = shift;
+    ( my $key = $self->param('key') ) =~ tr/_/./;
+    my $item =
+      $self->mongo->get_database( $self->param('db') )
+      ->get_collection( $self->param('collection') )
+      ->find_one( { $key => $self->param('value') } );
+    $self->render( json => $item );
+};
+
+# get record by /:key1/:value1/:key2/:value2
+get '/:db/:collection/:key1/:value1/:key2/:value2' => sub {
+    my $self = shift;
+    ( my $key1 = $self->param('key1') ) =~ tr/_/./;
+    ( my $key2 = $self->param('key2') ) =~ tr/_/./;
+    my $item =
+      $self->mongo->get_database( $self->param('db') )
+      ->get_collection( $self->param('collection') )
+      ->find_one(
+        { $key1 => $self->param('value1'), $key2 => $self->param('value2') } );
+    $self->render( json => $item );
+};
+
+# Cross-collection query 1 term
+# get record by /:db/cross/:collection1/:id/:collection2
+# Using 2 queries (not using aggregate)
+get '/:db/cross/:collection1/:id/:collection2' => sub {
+    my $self = shift;
+    my $first =
+      $self->mongo->get_database( $self->param('db') )
+      ->get_collection( $self->param('collection1') )
+      ->find_one( { 'id' => $self->param('id') } );
+    if ( $self->param('collection2') ne 'genomicVariations' ) {
+        my $item =
+          $self->mongo->get_database( $self->param('db') )
+          ->get_collection( $self->param('collection2') )->find_one(
+            {
+                '$or' => [
+                    { 'id'           => $first->{id} },
+                    { 'individualId' => $first->{id} }
+                ]
+            }
+          );
+        $self->render( json => $item );
+    }
+    else {
+        my $cursor =
+          $self->mongo->get_database( $self->param('db') )
+          ->get_collection( $self->param('collection2') )
+          ->find( { 'caseLevelData.biosampleId' => $first->{id} } )->limit(10);
+        my $items;
+        while ( my $doc = $cursor->next ) {
+            push @{$items}, $doc->{variantInternalId};
+        }
+        $self->render( json => $items );
+    }
+};
+
+app->start;

@@ -1,0 +1,492 @@
+# NAME
+
+`beacon`: A script to transform **genomic variations data** (VCF) to queryable data (MongoDB)
+
+# SYNOPSIS
+
+beacon &lt;mode> \[-arguments\] \[-options\]
+
+    Mode:
+      vcf 
+        -i|input                       Requires a VCF.gz file
+                                       (May require a parameters file)
+
+      mongodb
+                                       (May require a parameters file)
+
+      full (vcf + mongodb)
+        -i|input                       Requires a VCF.gz file
+                                       (May require a parameters file)
+
+    Options:
+        -h|help                        Brief help message
+        -man                           Full documentation
+        -v                             Version
+        -c                             Requires a configuration file
+        -p                             Requires a parameters file
+        -n                             Number of cpus/cores/threads
+        -debug                         Print debugging (from 1 to 5, being 5 max)
+        -verbose                       Verbosity on
+        -nc|-no-color                  Don't print colors to STDOUT
+
+        (For convenience, specifiers may have a leading - or --)
+
+# DESCRIPTION
+
+`beacon` is a script to transform **genomic variations data** (VCF) to queryable data (MongoDB). See extended documentation [here](https://b2ri-documentation.readthedocs.io/en/latest/data-ingestion).
+
+The VCF data are annotated and then serialized to a JSON text file (`genomicVariationsVcf.json.gz`). The script also enables data load of the [BFF](#what-is-the-beacon-friendly-format-bff) to MongoDB. 
+
+`beacon` is part of the [beacon2-ri-tools](#readme-md) package, which also contains other [utilities](https://github.com/EGA-archive/beacon2-ri-tools/tree/main/utils) to help with data ingestion.
+
+**beacon2-ri-tools** repository is part of the ELIXIR-CRG Beacon v2 Reference Implementation (B2RI).  
+
+                * Beacon v2 Reference Implementation *
+
+                    ___________
+                    |          |
+              XLSX  | Metadata | (incl. Phenotypic data)
+                    |__________|
+                         |
+                         |
+                         | Validation (bff-validator)
+                         |
+     _________       ____v____        __________         ______
+     |       |       |       |       |          |        |     | <---- Request
+     |  VCF  | ----> |  BFF  | ----> | Database | <----> | API | 
+     |_______|       |_ _____|       |__________|        |_____| ----> Response
+                         |             MongoDB             
+              beacon     |    beacon                       
+                         |    
+                         |
+                      Optional
+                         |
+                   ______v_______
+                   |            |
+                   | BFF        |
+                   | Genomic    | Visualization
+                   | Variations |
+                   | Browser    |
+                   |____________|
+     
+    ------------------------------------------------|||------------------------
+    beacon2-ri-tools                                             beacon2-ri-api
+
+# INSTALLATION
+
+We provide two installation options, one containerized (recommended) and another non-containerized.
+
+## Containerized
+
+Download the `Dockerfile` from [Github](https://github.com/EGA-archive/beacon2-ri-tools/blob/main/Dockerfile) by typing:
+
+    wget https://raw.githubusercontent.com/EGA-archive/beacon2-ri-tools/main/Dockerfile
+
+Then execute the following commands:
+
+    docker build -t crg/beacon2_ri:latest . # build the container (~1.1G)
+    docker run -tid --name beacon2-ri-tools crg/beacon2_ri:latest # run the image detached
+    docker ps  # list your containers, beacon2-ri-tools should be there
+    docker exec -ti beacon2-ri-tools bash # connect to the container interactively
+
+_NB:_ Docker containers are fully isolated. If you need the mount a volume to the container please use the following syntax (`-v host:container`). Find an example below (note that you need to change the paths to match yours):
+
+    docker run -tid --volume /media/mrueda/4TBA:/4TB --name beacon2-ri-tools crg/beacon2_ri:latest
+
+After the `docker exec` command, you will land at `/usr/share/beacon-ri/`, then execute:
+
+    nohup beacon2-ri-tools/BEACON/bin/deploy_external_tools.sh &
+
+...that will inject the external tools and DBs into the image and modify the [configuration](#readme-md-setting-up-beacon) files. It will also run a test to check that the installation was succesful. Note that running `deploy_external_tools.sh` will take some time (and disk space!!!). You can check the status by using:
+
+    tail -f nohup.out
+
+The last step is to deploy MongoDB. We will deploy it **outside** the `beacon2-ri-tools` container so please `exit` from it.
+
+Please download the `docker-compose.yml` file: 
+
+    wget https://raw.githubusercontent.com/EGA-archive/beacon2-ri-tools/main/docker-compose.yml
+
+And then execute:
+
+    docker-compose up -d
+
+## Non containerized
+
+Download the latest version from [Github](https://github.com/EGA-archive/beacon2-ri-tools):
+
+    tar -xvf beacon2-ri-tools-2.0.0.tar.gz    # Note that naming may be different
+
+Alternatively, you can use git clone to get the latest (stable) version
+
+    git clone https://github.com/EGA-archive/beacon2-ri-tools.git
+
+`beacon` is a Perl script (no compilation needed) that runs on Linux command-line. Internally, it submits multiple pipelines via customizable Bash scripts (see example [here](https://github.com/EGA-archive/beacon2-ri-tools/blob/main/BEACON/bin/run_vcf2bff.sh)). Note that Perl and Bash are installed by default in Linux.
+
+Perl 5 is installed by default on Linux, but we will need to install a few CPAN modules.
+
+For simplicity, we're going to install the modules (they're harmless) with sudo privileges.
+
+(For Debian and its derivatives, Ubuntu, Mint, etc.)
+
+First we install `cpmanminus` utility:
+
+    sudo apt-get install cpanminus
+
+Second we use `cpanm` to install the CPAN modules. Change directory into the `beacon2-ri-tools` folder and run:
+
+    cpanm --sudo --installdeps .
+
+Also, to read the documentation you'll need `perldoc` that may or may not be installed in your Linux distribution:
+
+    sudo apt-get install perl-doc
+
+If you prefer to have the dependencies in a "virtual environment" (i.e., install the CPAN modules in the directory of the application) we recommend using the module `Carton`.
+
+    cpanm --sudo Carton
+
+Then, we can install our dependencies:
+
+    carton install
+
+`beacon` also needs that **bcftools**, **SnpEff** and **MongoDB** are installed. See [external software](https://b2ri-documentation.readthedocs.io/en/latest/download-and-installation/#non-containerized-version-data-ingestion-tools) for more info.
+
+### Setting up beacon
+
+Before running anything you need to set-up the **configuration file**:
+
+The configuration file is a [YAML](https://es.wikipedia.org/wiki/YAML) text file with locations for executables and files needed for the job (e.g., SnpEff jar files, dbSNSFP database).
+
+You have two options here:
+
+    * RECOMMENDED: You set the config file ONCE. This file will serve for all your jobs.
+      To set it up go to the installation directory and modify the file 'config.yaml' with your paths.
+
+    * You provide the config file with the argument -c when you run a
+      job. This is useful if you want to override the "main" file (see above).
+
+Below are parameters that can be modified by the user along with their default values.
+Please remember to leave a blank space between the parameter and the value.
+
+**Configuration file** (YAML)
+
+    ---
+    # Reference assemblies (genomes)
+    hs37fasta: /path
+    hg19fasta: /path
+    hg38fasta: /path
+
+    # ClinVar
+    hg19clinvar: /path
+    hg38clinvar: /path
+
+    # Cosmic 
+    hg19cosmic: /path
+    hg38cosmic: /path
+
+    # dbSNSFP Academic
+    hg19dbnsfp: /path
+    hg38dbnsfp: /path
+
+    # Miscellanea software
+    snpeff: /path
+    snpsift: /path
+    bcftools: /path
+
+    # Max RAM memory for snpeff (optional)
+    mem: 8G
+
+    # MongoDB 
+    mongoimport: /path
+    mongostat: /path
+    mongosh: /path
+    mongodburi: string
+
+    # Temporary directory (optional)
+    tmpdir: /path
+
+Please find below a detailed description of all parameters (alphabetical order):
+
+- **bcftools**
+
+    Location of the bcftools exe (e.g., /home/foo/bcftools\_1.11/bcftools).
+
+- **dbnsfpset**
+
+    The set of fields to be taken from dbNSFP database.
+
+    Values: &lt;all> or &lt;ega>
+
+- **genome**
+
+    Your reference genome.
+
+    Accepted values: hg19, hg38 and hs37.
+
+    If you used GATKs GRCh37/b37 set it to hg19.
+
+    Not supported  : NCBI36/hg18, NCBI35/hg17, NCBI34/hg16, hg15 and older.
+
+- **hg19{clinvar,cosmic,dbnsfp,fasta}**
+
+    Path for each of these files. COSMIC annotations are added but not used (v2.0.0).
+
+- **hg38{clinvar,cosmic,dbnsfp,fasta}**
+
+    Path for each of these files. COSMIC annotations are added but not used (v2.0.0).
+
+- **hs37**
+
+    Path for ithe reference genome hs37.
+
+- **mem**
+
+    RAM memory for the Java processes (e.g., 8G).
+
+- **mongoXYZ**
+
+    Parameters needed for MongoDB.
+
+- **paneldir**
+
+    A directory where you can store text files (consisting of a column with a lists of genes) to be displayed by the BFF Genomic Variations Browser.
+
+- **snpeff**
+
+    Location of the java archive dir (e.g., /home/foo/snpEff/snpEff.jar).
+
+- **snpsift**
+
+    Location of the java archive dir (e.g., /home/foo/snpEff/snpSift.jar).
+
+- **tmpdir**
+
+    Use if you a have a preferred tmpdir.
+
+### System requirements
+
+    * Ideally a Debian-based distribution (Ubuntu or Mint), but any other (e.g., CentOs, OpenSuse) should do as well (untested).
+    * Perl 5 (>= 5.10 core; installed by default in most Linux distributions). Check the version with "perl -v"
+    * 4GB of RAM (ideally 16GB).
+    * >= 1 cores (ideally i7 or Xeon).
+    * At least 200GB HDD.
+    * bcftools, SnpEff and MongoDB
+
+The Perl itself does not need a lot of RAM (max load will reach 400MB) but external tools do (e.g., process `mongod` \[MongoDB's daemon\]).
+
+### Testing the code
+
+I am not using any CPAN's module to perform unit tests. When I modify the code my "integration tests" are done by comparing to reference files. You can validate the installation using the files included in the [test](https://github.com/EGA-archive/beacon2-ri-tools/tree/main/test) directory.
+
+# HOW TO RUN BEACON
+
+We recommend following this [tutorial](https://b2ri-documentation.readthedocs.io/en/latest/tutorial-data-beaconization).
+
+This script has three **modes**: `vcf, mongodb` and `full`
+
+**\* Mode `vcf`**
+
+Converting a VCF file into a BFF file for genomic variations.
+
+**\* Mode `mongodb`**
+
+Loading BFF data into MongoDB.
+
+**\* Mode `full`**
+
+Ingesting VCF and loading metadata and genomic variations (all in one step) into MongoDB.
+
+To perform all these taks you'll need: 
+
+- A gzipped VCF 
+
+    Note that it does not need to be bgzipped.
+
+- (Optional) A parameters file
+
+    A parameters text file that will contain specific values needed for the job.
+
+- BFF files (only for modes: mongodb and full)
+
+    (see explanation of BFF format [here](#what-is-the-beacon-friendly-format-bff))
+
+- (Optional) Specify the number of cores (only for VCF processing!)
+
+    The number of threads/cores you want to use for the job. In this regard (since SnpEff does not deal well with parallelization) we recommend using `-n 1` and running multiple simultaneous jobs with GNU `parallel` or the included [queue system](https://github.com/EGA-archive/beacon2-ri-tools/tree/main/utils/bff_queue)). The software scales linearly {O}(n) with the number of variations present in the input file. The easiest way is to run one job per chromosome, but if you are in a hurry and have many cores you can split each chromosome into smaller vcfs.
+
+`beacon` will create an independent project directory `projectdir` and store all needed information needed there. Thus, many concurrent calculations are supported.
+Note that `beacon` will treat your data as _read-only_ (i.e., will not modify your original files).
+
+**Annex: Parameters file**  (YAML)
+
+    --
+    bff:
+      metadatadir: .
+      analyses: analyses.json
+      biosamples: biosamples.json
+      cohorts: cohorts.json
+      datasets: datasets.json
+      genomicVariations: genomicVariations.json
+      genomicVariationsVcf: genomicVariationsVcf.json.gz
+      individuals: individuals.json
+      runs: runs.json
+    datasetid: crg_beacon_test
+    genome: hs37
+    bff2html: true
+    projectdir: my_project
+
+Please find below a detailed description of all parameters (alphabetical order):
+
+- **bff**
+
+    Location for the 6 metadata JSON files.
+
+- **center**
+
+    Experimental feature. Not used for now.
+
+- **datasetid**
+
+    An unique identifier for the dataset present in the input VCF. Default value is 'id\_1'
+
+- **ega**
+
+    (For EGA internal use only)
+
+    egac: EGA DAC Accession ID.
+
+    egad: EGA Dataset Accession ID.
+
+    egas: EGA Study Accession ID.
+
+- **genome**
+
+    Your reference genome.
+
+    Accepted values: hg19, hg38 and hs37.
+
+    If you used GATKs GRCh37/b37 set it to hg19.
+
+    Not supported  : NCBI36/hg18, NCBI35/hg17, NCBI34/hg16, hg15 and older.
+
+- **organism**
+
+    Experimental feature. Not used for now.
+
+- **bff2html**
+
+    Set bff2html to `true` to activate BFF Genomic Variations Browser.
+
+- **projectdir**
+
+    The prefix for dir name.
+
+- **technology**
+
+    Experimental feature. Not used for now.
+
+**Optional:** The user has the option of turning on the **BFF Genomic Variatons Browser**. With this option enabled, an HTML file will be created to be used with a web browser.
+The purpose of such HTML file is to provide a preliminary exploration of the genomic variations data. See the full documentation [here](https://b2ri-documentation.readthedocs.io/en/latest/data-ingestion/#bff-genomic-variations-browser).
+
+**Examples:**
+
+    $ ./beacon vcf -i input.vcf.gz 
+
+    $ ./beacon mongodb -p param_file  # MongoDB load only
+
+    $ ./beacon full -n 1 --i input.vcf.gz -p param_file  > log 2>&1
+
+    $ ./beacon full -n 1 --i input.vcf.gz -p param_file -c config_file > log 2>&1
+
+    $ nohup $path_to_beacon/beacon full -i input.vcf.gz -verbose
+
+    $ parallel "./beacon vcf -n 1 -i chr{}.vcf.gz  > chr{}.log 2>&1" ::: {1..22} X Y
+
+    $ carton exec -- ./beacon vcf -i input.vcf.gz # If using Carton 
+
+_NB_: If you don't want colors in the output use the flag `--no-color`. If you did not use the flag and want to get rid off the colors in your printed log file use this command to parse ANSI colors:
+
+    perl -pe 's/\x1b\[[0-9;]*[mG]//g'
+
+## WHAT IS THE BEACON FRIENDLY FORMAT (BFF)
+
+Beacon Friendly Format is a set of 7 JSON files (JSON arrays consisting of multiple documents) that match the 7 schemas from [Beacon v2 Models](https://docs.genomebeacons.org/schemas-md/analyses_defaultSchema/).
+
+Six files correspond to Metadata (`analyses.json,biosamples.json,cohorts.json,datasets.json,individuals.json,runs.json`) and one corresponds to variations (`genomicVariations.json`).
+
+Normally, `beacon` script is used to create `genomicVariations` JSON file. The other 6 files are created with [this utility](https://github.com/EGA-archive/beacon2-ri-tools/tree/main/utils/bff_validator) (part of the distribution). See instructions [here](https://github.com/EGA-archive/beacon2-ri-tools/tree/main/utils/bff_validator/README.md).
+
+Once we have all seven files, then we can proceed to load the data into MongoDB.
+
+# COMMON ERRORS: SYMPTOMS AND TREATMENT
+
+    * Dockerfile:
+            * DNS errors
+              - Error: Temporary failure resolving 'foo'
+                Solution: https://askubuntu.com/questions/91543/apt-get-update-fails-to-fetch-files-temporary-failure-resolving-error
+    * Perl: 
+            * Compilation errors:
+              - Error: Unknown PerlIO layer "gzip" at (eval 10) line XXX
+                Solution: cpanm --sudo PerlIO::gzip
+                             ... or ...
+                      sudo apt-get install libperlio-gzip-perl
+            * Execution errors:
+              - Error with YAML::XS
+                Solution: Make sure the YAML (config.yaml or parameters file) is well formatted (e.g., space after param:' ').
+
+    * Bash: 
+            (Possible errors that can happen when the embeded Bash scripts are executed)
+            * bcftools errors: bcftools is nit-picky about VCF fields and nomenclature of contigs/chromosomes in reference genome
+                   => Failed to execute: beacon_161855926405757/run_vcf2bff.sh
+                      Please check this file beacon_161855926405757/run_vcf2bff.log
+              - Error: 
+                     # Running bcftools
+                     [E::faidx_adjust_position] The sequence "22" was not found
+                Solution: Make sure you have set the correct genome (e.g., hg19, hg38 or hs37) in parameters_file.
+                          In this case bcftools was expecting to find 22 in the <*.fa.gz> file from reference genome, but found 'chr22' instead.
+                    Tips:
+                         - hg{19,38} use 'chr' in chromosome naming (e.g., chr1)
+                         - hs37 does not use 'chr' in chromosome naming (e.g., 1)
+          
+               - Error
+                    # Running bcftools
+                    INFO field IDREP only contains 1 field, expecting 2
+                 Solution: Please Fix VCF info field manually (or get rid of problematic fields with bcftools)
+                           e.g., bcftools annotate -x INFO/IDREP input.vcf.gz | gzip > output.vcf.gz
+                                 bcftools annotate -x INFO/MLEAC,INFO/MLEAF,FMT/AD,FMT/PL input.vcf.gz  | gzip > output.vcf.gz
+               
+                     
+      NB: The bash scripts can be executed "manually" in the beacon_XXX dir. You must provide the 
+          input vcf as an argument. This is a good option for debugging. 
+
+## KNOWN ISSUES
+
+    * Some Linux distributions do not include perldoc and thus Perl's library Pod::Usage will complain.
+      Please, install it (sudo apt-get install perl-doc) if needed.
+
+# CITATION
+
+The author requests that any published work that utilizes **B2RI** includes a cite to the the following reference:
+
+Rueda, M, Ariosa R. "Beacon v2 Reference Implementation: a toolkit to enable federated sharing of genomic and phenotypic data". _Bioinformatics_, btac568, https://doi.org/10.1093/bioinformatics/btac568
+
+# AUTHOR
+
+Written by Manuel Rueda, PhD. Info about CRG can be found at [https://www.crg.eu](https://www.crg.eu)
+
+Credits: 
+
+    * Sabela De La Torre (SDLT) created a Bash script for Beacon v1 to parse vcf files L<https://github.com/ga4gh-beacon/beacon-elixir>.
+    * Toshiaki Katayamai re-implemented the Beacon v1 script in Ruby.
+    * Later Dietmar Fernandez-Orth (DFO) modified the Ruby for Beacon v2 L<https://github.com/ktym/vcftobeacon and added post-processing with R, from which I borrowed ideas to implement vcf2bff.pl.
+    * DFO for usability suggestions and for creating bcftools/snpEff commands.
+    * Roberto Ariosa for help with MongoDB implementation.
+    * Mauricio Moldes helped with the containerization.
+
+# REPORTING BUGS
+
+For Beacon problems, questions, or suggestions, send an e-mail to manuel.rueda@crg.eu.
+
+# COPYRIGHT and LICENSE
+
+This PERL file is copyrighted, (C) 2021-2022 Manuel Rueda. See the LICENSE file included in this distribution.
