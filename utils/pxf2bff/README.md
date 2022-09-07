@@ -46,6 +46,8 @@ First we install cpanminus (with sudo privileges):
 
 Second we use cpanm to install the CPAN modules:
 
+(Note that first you need to copy the following [cpanfile](https://raw.githubusercontent.com/EGA-archive/beacon2-ri-tools/main/cpanfile) to your current directory).
+
     $ cpanm --sudo --installdeps .
 
 If you prefer to have the dependencies in a "virtual environment" (i.e., install the CPAN modules in the directory of the application) we recommend using the module Carton.
