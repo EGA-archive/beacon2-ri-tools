@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- `utils/bff-validator` 
+  * Minor changes in STDOUT print.
+
 ### Fixed
 
 ### Deprecated
@@ -22,4 +25,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Stable version released along with the accompanying paper:
   *  _Bioinformatics_, btac568, https://doi.org/10.1093/bioinformatics/btac568
-- Works with [Beacon v2.0.0](https://github.com/ga4gh-beacon/beacon-v2/releases/tag/v2.0.0) specification
+- Works with [Beacon v2.0.0](https://github.com/ga4gh-beacon/beacon-v2/releases/tag/v2.0.0) specification.
