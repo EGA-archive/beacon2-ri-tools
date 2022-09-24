@@ -101,7 +101,7 @@ echo "##### Running integration test #####"
 
 test_result=$( ls -t . | head -1) 
 
-DIFF_DEPLOYMENT=$(diff <(zgrep -v beacon "$test_result"/vcf/genomicVariationsVcf.json.gz | jq -S .) <(zgrep -v beacon test/beacon_164977232803910/vcf/genomicVariationsVcf.json.gz | jq -S .) )
+DIFF_DEPLOYMENT=$(diff <(zcat "$test_result"/vcf/genomicVariationsVcf.json.gz | jq -S . | grep -v beacon) <(zcat test/beacon_166403275914916/vcf/genomicVariationsVcf.json.gz | jq -S . | grep -v beacon) )
 
 if [ "$DIFF_DEPLOYMENT" == "" ] 
 then

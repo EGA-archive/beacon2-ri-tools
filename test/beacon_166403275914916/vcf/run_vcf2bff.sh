@@ -27,19 +27,19 @@
 
 set -euo pipefail
 export LC_ALL=C
-export TMPDIR=/media/mrueda/4TB/tmp
+export TMPDIR=/media/mrueda/4TBT/tmp
 zip='/usr/bin/pigz -p 1'
-snpeff='/usr/bin/java -Xmx4G -jar /media/mrueda/4TB/NGSutils/snpEff/snpEff.jar'
-snpsift='/usr/bin/java -Xmx4G -jar /media/mrueda/4TB/NGSutils/snpEff/SnpSift.jar'
-bcftools=/media/mrueda/4TB/NGSutils/bcftools-1.11/bcftools
-vcf2bff=/pro/beacon-2.0.0/BEACON/bin/vcf2bff.pl
+snpeff='/usr/bin/java -Xmx4G -jar /media/mrueda/4TBT/NGSutils/snpEff/snpEff.jar'
+snpsift='/usr/bin/java -Xmx4G -jar /media/mrueda/4TBT/NGSutils/snpEff/SnpSift.jar'
+bcftools=/media/mrueda/4TBT/NGSutils/bcftools-1.15.1/bcftools
+vcf2bff=/pro/beacon-2.0.0/beacon2-ri-tools/BEACON/bin/vcf2bff.pl
 genome='hg19'
-ref=/media/mrueda/4TB/Databases/genomes/hs37d5.fa.gz
-cosmic=/media/mrueda/4TB/Databases/snpeff/v5.0/hg19/CosmicCodingMuts.normal.hg19.vcf.gz
-dbnsfp=/media/mrueda/4TB/Databases/snpeff/v5.0/hg19/dbNSFP4.1a_hg19.txt.gz
+ref=/media/mrueda/4TBT/Databases/genomes/hs37d5.fa.gz
+cosmic=/media/mrueda/4TBT/Databases/snpeff/v5.0/hg19/CosmicCodingMuts.normal.hg19.vcf.gz
+dbnsfp=/media/mrueda/4TBT/Databases/snpeff/v5.0/hg19/dbNSFP4.1a_hg19.txt.gz
 datasetid=default_beacon_1
-projectdir=beacon_164977232803910
-clinvar=/media/mrueda/4TB/Databases/snpeff/v5.0/hg19/clinvar_20211218.vcf.gz
+projectdir=beacon_166403275914916
+clinvar=/media/mrueda/4TBT/Databases/snpeff/v5.0/hg19/clinvar_20211218.vcf.gz
 
 function usage {
 

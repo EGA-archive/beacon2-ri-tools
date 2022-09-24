@@ -578,7 +578,8 @@ sub mapping2beacon {
         }
     };
 
-    for my $db ( keys %{ $source_freq->{source} } ) {
+    # We sort keys to allow for integration tests later
+    for my $db ( sort keys %{ $source_freq->{source} } ) {
 
         # First we create an array for each population (if present)
         my $tmp_pop = [];    # Must be initialized in order to push @{$tmp_pop}
@@ -656,7 +657,8 @@ sub mapping2beacon {
           . $cursor_uid->{ALT};
 
         # dbNSFP_Ensembl_geneid	ENSG00000186092,ENSG00000186092 (duplicated)
-        my $geneid = ( split /,/, $cursor_info->{dbNSFP_Ensembl_geneid} )[0]
+        my $geneid;
+        $geneid = ( split /,/, $cursor_info->{dbNSFP_Ensembl_geneid} )[0]
           if $cursor_info->{dbNSFP_Ensembl_geneid};
         $genomic_variations->{identifiers}{genomicHGVSId} =
           $geneid ? $geneid . $tmp_str : $cursor_uid->{CHROM} . $tmp_str;
@@ -677,8 +679,9 @@ sub mapping2beacon {
           if ( $key eq 'dbNSFP_HGVSp_snpEff'
             || $key eq 'dbNSFP_HGVSc_snpEff' );
         if ( $key eq 'proteinHGVSIds' || $key eq 'transcriptHGVSIds' ) {
-            my @ids = split /,/, $cursor_info->{$val} if $cursor_info->{$val};
-            my @ens = split /,/,
+            my (@ids, @ens);
+            @ids = split /,/, $cursor_info->{$val} if $cursor_info->{$val};
+            @ens = split /,/,
               $cursor_info
               ->{ $map_identifiers_array{ $map_identifiers_array{$key} } }
               if exists $cursor_info

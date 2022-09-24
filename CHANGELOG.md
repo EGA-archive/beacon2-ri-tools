@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `utils/bff-validator` 
   * Minor changes in STDOUT print.
+- `test`
+  * `genomicVariationsVcf.json.gz` file has `frequencyInPopulations` sorted by key.
 
 ### Fixed
 

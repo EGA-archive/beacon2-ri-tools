@@ -6,11 +6,11 @@ REF/ALT total/modified/added:  	1044/0/0
 00:00:00	SnpSift version 5.0e (build 2021-03-09 06:01), by Pablo Cingolani
 00:00:00	Command: 'dbnsfp'
 00:00:00	Reading configuration file 'snpEff.config'
-00:00:01	done
-00:00:01	Annotating:	Input file : 'test_1000G.norm.ann.vcf.gz'	Database file : '/media/mrueda/4TB/Databases/snpeff/v5.0/hg19/dbNSFP4.1a_hg19.txt.gz'
-00:00:01	Loading data types from file '/media/mrueda/4TB/Databases/snpeff/v5.0/hg19/dbNSFP4.1a_hg19.txt.gz.data_types'
-00:00:01	Opening database file and loading index
-00:00:01	Database fields:
+00:00:02	done
+00:00:02	Annotating:	Input file : 'test_1000G.norm.ann.vcf.gz'	Database file : '/media/mrueda/4TBT/Databases/snpeff/v5.0/hg19/dbNSFP4.1a_hg19.txt.gz'
+00:00:02	Loading data types from file '/media/mrueda/4TBT/Databases/snpeff/v5.0/hg19/dbNSFP4.1a_hg19.txt.gz.data_types'
+00:00:02	Opening database file and loading index
+00:00:02	Database fields:
 			'chr'
 			'pos(1-based)'
 			'ref'
@@ -378,7 +378,7 @@ REF/ALT total/modified/added:  	1044/0/0
 			'GTEx_V8_gene'
 			'GTEx_V8_tissue'
 			'Geuvadis_eQTL_target_gene'
-00:00:01	Fields to add:
+00:00:02	Fields to add:
 			'1000Gp3_AC'
 			'1000Gp3_AF'
 			'1000Gp3_AFR_AC'
@@ -746,8 +746,8 @@ REF/ALT total/modified/added:  	1044/0/0
 			'ref'
 			'refcodon'
 			'rs_dbSNP151'
-00:00:01	Annotating file 'test_1000G.norm.ann.vcf.gz'
-..........00:00:04	Done.
+00:00:02	Annotating file 'test_1000G.norm.ann.vcf.gz'
+..........00:00:05	Done.
 	Total annotated entries : 17
 	Total entries           : 1044
 	Percent                 : 1.63%
@@ -756,7 +756,7 @@ REF/ALT total/modified/added:  	1044/0/0
 # Running vcf2bff
 Info:
 Info: vcf2bff 2.0.0
-Info: vcf2bff exe /pro/beacon-2.0.0/BEACON/bin/vcf2bff.pl
+Info: vcf2bff exe /pro/beacon-2.0.0/beacon2-ri-tools/BEACON/bin/vcf2bff.pl
 Info: Author: Manuel Rueda, PhD
 Info:
 Info: ARGUMENTS USED:
@@ -764,16 +764,16 @@ Info: --i test_1000G.norm.ann.dbnsfp.clinvar.cosmic.vcf.gz
 Info: --genome hg19
 Info: --format bff
 Info: --dataset-id default_beacon_1
-Info: --project-dir beacon_164977232803910
+Info: --project-dir beacon_166403275914916
 Info: --verbose
 Info:
 Info: VCF2BFF PARAMETERS:
-Info: cwd               =>  /pro/beacon-2.0.0/test/beacon_164977232803910/vcf
+Info: cwd               =>  /pro/beacon-2.0.0/beacon2-ri-tools/test/beacon_166403275914916/vcf
 Info: filein            =>  test_1000G.norm.ann.dbnsfp.clinvar.cosmic.vcf.gz
 Info: fileout           =>  genomicVariationsVcf.json.gz
 Info: hostname          =>  mrueda-ws1
 Info: ncpuhost          =>  1
-Info: projectDir        =>  beacon_164977232803910
+Info: projectDir        =>  beacon_166403275914916
 Info: user              =>  mrueda
 Info: version           =>  2.0.0
 Info:
