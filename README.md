@@ -326,10 +326,10 @@ Note that `beacon` will treat your data as _read-only_ (i.e., will not modify yo
       biosamples: biosamples.json
       cohorts: cohorts.json
       datasets: datasets.json
-      genomicVariations: genomicVariations.json
-      genomicVariationsVcf: genomicVariationsVcf.json.gz
       individuals: individuals.json
       runs: runs.json
+      # Note that genomicVariationsVcf is not affected by <metadatadir>
+      genomicVariationsVcf: beacon_XXXX/vcf/genomicVariationsVcf.json.gz
     datasetid: crg_beacon_test
     genome: hs37
     bff2html: true
@@ -339,7 +339,7 @@ Please find below a detailed description of all parameters (alphabetical order):
 
 - **bff**
 
-    Location for the 6 metadata JSON files.
+    Location for the Beacon Friendly Format JSON files.
 
 - **center**
 
