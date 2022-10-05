@@ -1,3 +1,6 @@
+[![Docker build](https://github.com/EGA-archive/beacon2-ri-tools/actions/workflows/docker-build.yml/badge.svg)](https://github.com/EGA-archive/beacon2-ri-tools/actions/workflows/docker-build.yml)
+[![Documentation Status](https://readthedocs.org/projects/b2ri-documentation/badge/?version=latest)](https://b2ri-documentation.readthedocs.io/en/latest/?badge=latest)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 # NAME
 
 `beacon`: A script to transform **genomic variations data** (VCF) to queryable data (MongoDB)
