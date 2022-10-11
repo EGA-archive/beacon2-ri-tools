@@ -76,7 +76,7 @@ For executing `bff-validator` you will need:
 
         $ ./csv2xlsx *csv -o out.xlsx
 
-    **B)** A set of JSON files that follow the Beacon Friendly Format. The files MUST be uncompressed and named &lt;analyses.json>, &lt;biosamples.json>, etc.
+    **B)** A set of JSON (array) files that follow the Beacon Friendly Format. The files MUST be uncompressed and named &lt;analyses.json>, &lt;biosamples.json>, etc.
 
 - Beacon v2 Models (with JSON pointers dereferenced)
 

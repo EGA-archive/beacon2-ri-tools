@@ -805,7 +805,7 @@ I<NB:> If you have multiple CSV files instead of a XLSX file you can use the inc
 
    $ ./csv2xlsx *csv -o out.xlsx
 
-B<B)> A set of JSON files that follow the Beacon Friendly Format. The files MUST be uncompressed and named <analyses.json>, <biosamples.json>, etc.
+B<B)> A set of JSON (array) files that follow the Beacon Friendly Format. The files MUST be uncompressed and named <analyses.json>, <biosamples.json>, etc.
 
 =item Beacon v2 Models (with JSON pointers dereferenced)
 
