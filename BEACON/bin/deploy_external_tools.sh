@@ -7,7 +7,7 @@
 
 share_dir=/usr/share/beacon-ri
 tmp_dir=/tmp
-ftp_site=ftp://FTPuser:FTPusersPassword@xfer.crg.eu:221
+ftp_site=ftp://FTPuser:FTPusersPassword@xfer13.crg.eu:221
 n_connect=4
 
 ################
