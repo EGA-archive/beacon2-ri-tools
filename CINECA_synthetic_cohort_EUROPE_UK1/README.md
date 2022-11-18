@@ -28,8 +28,8 @@ A [raw file](./uk1.tsv) with phenoclinic data was gently donated to us from our 
 
 * `chr22.Test.1000G.phase3.joint.vcf.gz` - VCF file consisting of WGS for chr22 (INPUT).
 
-      $ wget ftp://xfer13.crg.eu:221/external_files/CINECA_synthetic_cohort_EUROPE_UK1/vcf/chr22.Test.1000G.phase3.joint.vcf.gz
+      $ wget ftp://FTPuser:FTPusersPassword@xfer13.crg.eu:221/external_files/CINECA_synthetic_cohort_EUROPE_UK1/vcf/chr22.Test.1000G.phase3.joint.vcf.gz
 
 * `genomicVariationsVcf.json.gz` - Collection for genomic variations (OUTPUT).
 
-      $ wget ftp://xfer13.crg.eu:221/external_files/CINECA_synthetic_cohort_EUROPE_UK1/bff/genomicVariationsVcf.json.gz
+      $ wget ftp://FTPuser:FTPusersPassword@xfer13.crg.eu:221/external_files/CINECA_synthetic_cohort_EUROPE_UK1/bff/genomicVariationsVcf.json.gz
