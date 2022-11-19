@@ -1,5 +1,4 @@
-#!/usr/bin/env bash
-
+#!/usr/bin/env bash 
 # Date       : 2022-Aug-05
 # Version    : 2.0.0
 # Author     : Mauricio Moldes (mauricio.moldes@crg.eu)
@@ -101,7 +100,7 @@ echo "##### Running integration test #####"
 
 test_result=$( ls -t . | head -1) 
 
-DIFF_DEPLOYMENT=$(diff <(zcat "$test_result"/vcf/genomicVariationsVcf.json.gz | jq -S . | grep -v beacon) <(zcat test/beacon_166403275914916/vcf/genomicVariationsVcf.json.gz | jq -S . | grep -v beacon) )
+DIFF_DEPLOYMENT=$(diff <(zcat "$test_result"/vcf/genomicVariationsVcf.json.gz | jq 'del(.[]._info)' -S) <(zcat test/beacon_166403275914916/vcf/genomicVariationsVcf.json.gz | jq 'del(.[]._info)' -S) )
 
 if [ "$DIFF_DEPLOYMENT" == "" ] 
 then

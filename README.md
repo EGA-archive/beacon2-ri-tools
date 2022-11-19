@@ -1,7 +1,3 @@
-[![Docker build](https://github.com/EGA-archive/beacon2-ri-tools/actions/workflows/docker-build.yml/badge.svg)](https://github.com/EGA-archive/beacon2-ri-tools/actions/workflows/docker-build.yml)
-[![Documentation Status](https://readthedocs.org/projects/b2ri-documentation/badge/?version=latest)](https://b2ri-documentation.readthedocs.io/en/latest/?badge=latest)
-![Maintenance status](https://img.shields.io/badge/maintenance-actively--developed-brightgreen.svg)
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 # NAME
 
 `beacon`: A script to transform **genomic variations data** (VCF) to queryable data (MongoDB)
@@ -89,13 +85,12 @@ Download the `Dockerfile` from [Github](https://github.com/EGA-archive/beacon2-r
 Then execute the following commands:
 
     docker build -t crg/beacon2_ri:latest . # build the container (~1.1G)
+
+**IMPORTANT:** Docker containers are fully isolated. If you think you'll have to mount a volume to the container please read the section [Mounting Volumes](#readme-md-mounting-volumes) before proceeding further.
+
     docker run -tid --name beacon2-ri-tools crg/beacon2_ri:latest # run the image detached
     docker ps  # list your containers, beacon2-ri-tools should be there
     docker exec -ti beacon2-ri-tools bash # connect to the container interactively
-
-_NB:_ Docker containers are fully isolated. If you need the mount a volume to the container please use the following syntax (`-v host:container`). Find an example below (note that you need to change the paths to match yours):
-
-    docker run -tid --volume /media/mrueda/4TBA:/4TB --name beacon2-ri-tools crg/beacon2_ri:latest
 
 After the `docker exec` command, you will land at `/usr/share/beacon-ri/`, then execute:
 
@@ -114,6 +109,38 @@ Please download the `docker-compose.yml` file:
 And then execute:
 
     docker-compose up -d
+
+### Mounting volumes
+
+It's simpler to mount a volume when starting a container than to add it to an existing one. If you need the mount a volume to the container please use the following syntax (`-v host:container`). Find an example below (note that you need to change the paths to match yours):
+
+    docker run -tid --volume /media/mrueda/4TBT/workdir:/workdir --name beacon2-ri-tools crg/beacon2_ri:latest
+
+Now you'll need to execute:
+
+    docker exec -ti beacon2-ri-tools bash # connect to the container interactively
+
+After the `docker exec` command, you will land at `/usr/share/beacon-ri/`, then execute:
+
+    nohup beacon2-ri-tools/BEACON/bin/deploy_external_tools.sh & # see above why
+
+Then, you can run commands **inside the container**, like this;
+
+    # We connect to the container interactively
+    docker exec -ti beacon2-ri-tools bash
+    # We go to the mounting point
+    cd /workdir 
+    # We run the executable
+    /usr/share/beacon-ri/beacon2-ri-tools/beacon vcf -i example.vcf.gz -p param.in
+
+Alternatively, you can run commands **from the host**, like this:
+
+    # First we create an alias to simplify invocation
+    alias beacon='docker exec -ti beacon2-ri-tools /usr/share/beacon-ri/beacon2-ri-tools/beacon'
+    # Now we use a text editor to edit teh file <params.in> to include the parameter 'projectdir'
+    projectdir /workdir/my_fav_job_id
+    # Finally we use the alias to run the command
+    beacon vcf /workdir/my_vcf.gz -p /workdir/param.in 
 
 ## Non containerized
 
@@ -371,7 +398,7 @@ Please find below a detailed description of all parameters (alphabetical order):
 
     If you used GATKs GRCh37/b37 set it to hg19.
 
-    Not supported  : NCBI36/hg18, NCBI35/hg17, NCBI34/hg16, hg15 and older.
+    Not supported: NCBI36/hg18, NCBI35/hg17, NCBI34/hg16, hg15 and older.
 
 - **organism**
 
@@ -383,7 +410,8 @@ Please find below a detailed description of all parameters (alphabetical order):
 
 - **projectdir**
 
-    The prefix for dir name.
+    The prefix for dir name (e.g., 'cancer\_sample\_001'). Note that it can also contain a path (e.g., /workdir/cancer\_sample\_001).
+    The script will automatically add an unique identifier to each job.
 
 - **technology**
 

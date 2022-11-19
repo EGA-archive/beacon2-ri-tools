@@ -304,13 +304,12 @@ Download the C<Dockerfile> from L<Github|https://github.com/EGA-archive/beacon2-
 Then execute the following commands:
 
   docker build -t crg/beacon2_ri:latest . # build the container (~1.1G)
+
+B<IMPORTANT:> Docker containers are fully isolated. If you think you'll have to mount a volume to the container please read the section L<Mounting Volumes|/README.md#mounting-volumes> before proceeding further.
+
   docker run -tid --name beacon2-ri-tools crg/beacon2_ri:latest # run the image detached
   docker ps  # list your containers, beacon2-ri-tools should be there
   docker exec -ti beacon2-ri-tools bash # connect to the container interactively
-
-I<NB:> Docker containers are fully isolated. If you need the mount a volume to the container please use the following syntax (C<-v host:container>). Find an example below (note that you need to change the paths to match yours):
-
-  docker run -tid --volume /media/mrueda/4TBA:/4TB --name beacon2-ri-tools crg/beacon2_ri:latest
 
 After the C<docker exec> command, you will land at C</usr/share/beacon-ri/>, then execute:
 
@@ -329,6 +328,38 @@ Please download the C<docker-compose.yml> file:
 And then execute:
 
   docker-compose up -d
+
+=head3 Mounting volumes
+
+It's simpler to mount a volume when starting a container than to add it to an existing one. If you need the mount a volume to the container please use the following syntax (C<-v host:container>). Find an example below (note that you need to change the paths to match yours):
+
+  docker run -tid --volume /media/mrueda/4TBT/workdir:/workdir --name beacon2-ri-tools crg/beacon2_ri:latest
+
+Now you'll need to execute:
+
+  docker exec -ti beacon2-ri-tools bash # connect to the container interactively
+
+After the C<docker exec> command, you will land at C</usr/share/beacon-ri/>, then execute:
+
+  nohup beacon2-ri-tools/BEACON/bin/deploy_external_tools.sh & # see above why
+
+Then, you can run commands B<inside the container>, like this;
+
+  # We connect to the container interactively
+  docker exec -ti beacon2-ri-tools bash
+  # We go to the mounting point
+  cd /workdir 
+  # We run the executable
+  /usr/share/beacon-ri/beacon2-ri-tools/beacon vcf -i example.vcf.gz -p param.in
+
+Alternatively, you can run commands B<from the host>, like this:
+
+  # First we create an alias to simplify invocation
+  alias beacon='docker exec -ti beacon2-ri-tools /usr/share/beacon-ri/beacon2-ri-tools/beacon'
+  # Now we use a text editor to edit teh file <params.in> to include the parameter 'projectdir'
+  projectdir /workdir/my_fav_job_id
+  # Finally we use the alias to run the command
+  beacon vcf /workdir/my_vcf.gz -p /workdir/param.in 
 
 =head2 Non containerized
 
@@ -596,7 +627,7 @@ Accepted values: hg19, hg38 and hs37.
 
 If you used GATKs GRCh37/b37 set it to hg19.
 
-Not supported  : NCBI36/hg18, NCBI35/hg17, NCBI34/hg16, hg15 and older.
+Not supported: NCBI36/hg18, NCBI35/hg17, NCBI34/hg16, hg15 and older.
 
 =item B<organism>
 
@@ -608,7 +639,8 @@ Set bff2html to C<true> to activate BFF Genomic Variations Browser.
 
 =item B<projectdir>
 
-The prefix for dir name.
+The prefix for dir name (e.g., 'cancer_sample_001'). Note that it can also contain a path (e.g., /workdir/cancer_sample_001).
+The script will automatically add an unique identifier to each job.
 
 =item B<technology>
 
