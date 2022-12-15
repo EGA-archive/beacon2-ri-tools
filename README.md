@@ -141,10 +141,10 @@ Alternatively, you can run commands **from the host**, like this:
 
     # First we create an alias to simplify invocation
     alias beacon='docker exec -ti beacon2-ri-tools /usr/share/beacon-ri/beacon2-ri-tools/beacon'
-    # Now we use a text editor to edit teh file <params.in> to include the parameter 'projectdir'
+    # Now we use a text editor to edit the file <params.in> to include the parameter 'projectdir'
     projectdir /workdir/my_fav_job_id
     # Finally we use the alias to run the command
-    beacon vcf /workdir/my_vcf.gz -p /workdir/param.in 
+    beacon vcf -i /workdir/my_vcf.gz -p /workdir/param.in 
 
 ## Non containerized
 
